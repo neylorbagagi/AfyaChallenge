@@ -13,6 +13,9 @@
 		F054C9CF2649C86600760E66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F054C9CE2649C86600760E66 /* Assets.xcassets */; };
 		F054C9D22649C86600760E66 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F054C9D02649C86600760E66 /* LaunchScreen.storyboard */; };
 		F054C9DD2649C86600760E66 /* AfyaChallengeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F054C9DC2649C86600760E66 /* AfyaChallengeTests.swift */; };
+		F054C9E82649C88100760E66 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F054C9E72649C88100760E66 /* APIClient.swift */; };
+		F054C9EA2649C9EB00760E66 /* APIClientTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F054C9E92649C9EB00760E66 /* APIClientTest.swift */; };
+		F08FE942264A0A8B00D01F4E /* DataRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08FE941264A0A8B00D01F4E /* DataRequestResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +39,9 @@
 		F054C9D82649C86600760E66 /* AfyaChallengeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AfyaChallengeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F054C9DC2649C86600760E66 /* AfyaChallengeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfyaChallengeTests.swift; sourceTree = "<group>"; };
 		F054C9DE2649C86600760E66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F054C9E72649C88100760E66 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		F054C9E92649C9EB00760E66 /* APIClientTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientTest.swift; sourceTree = "<group>"; };
+		F08FE941264A0A8B00D01F4E /* DataRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRequestResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +83,8 @@
 		F054C9C62649C86300760E66 /* AfyaChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				F054C9EC2649D58600760E66 /* Model */,
+				F054C9EB2649D49100760E66 /* Controller */,
 				F054C9C72649C86300760E66 /* AppDelegate.swift */,
 				F054C9C92649C86300760E66 /* ViewController.swift */,
 				F054C9CB2649C86300760E66 /* Main.storyboard */,
@@ -90,10 +98,27 @@
 		F054C9DB2649C86600760E66 /* AfyaChallengeTests */ = {
 			isa = PBXGroup;
 			children = (
+				F054C9E92649C9EB00760E66 /* APIClientTest.swift */,
 				F054C9DC2649C86600760E66 /* AfyaChallengeTests.swift */,
 				F054C9DE2649C86600760E66 /* Info.plist */,
 			);
 			path = AfyaChallengeTests;
+			sourceTree = "<group>";
+		};
+		F054C9EB2649D49100760E66 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F054C9E72649C88100760E66 /* APIClient.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		F054C9EC2649D58600760E66 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F08FE941264A0A8B00D01F4E /* DataRequestResponse.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,7 +223,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F054C9CA2649C86300760E66 /* ViewController.swift in Sources */,
+				F08FE942264A0A8B00D01F4E /* DataRequestResponse.swift in Sources */,
 				F054C9C82649C86300760E66 /* AppDelegate.swift in Sources */,
+				F054C9E82649C88100760E66 /* APIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,6 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F054C9DD2649C86600760E66 /* AfyaChallengeTests.swift in Sources */,
+				F054C9EA2649C9EB00760E66 /* APIClientTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
