@@ -11,7 +11,6 @@ import UIKit
 class ShowDetailViewController: UIViewController {
 
     var show:ACShow?
-    
     @IBOutlet weak var poster: UIImageView!
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var schedule: UILabel!
@@ -91,9 +90,10 @@ class ShowDetailViewController: UIViewController {
                 print("error indexpath")
                 return
             }
-            
+
             if let detailVC = segue.destination as? EpisodeDetailViewController {
-                detailVC.episode = self.episodesDataCache[indexPathSelected.row]
+                let sectionEpisodes = self.episodesDataCache.filter({$0.season == indexPathSelected.section+1})
+                detailVC.episode = sectionEpisodes[indexPathSelected.row]
             }
         }
     }

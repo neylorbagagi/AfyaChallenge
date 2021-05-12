@@ -72,7 +72,7 @@ class APIClient{
     ///     - error: Error?
     func getShows(byQuery query:String, completion: @escaping (_ data:[ACShow],_ error:Error?) -> Void) {
         
-        let url = "https://api.tvmaze.com/search/shows?q=girls"
+        let url = "https://api.tvmaze.com/search/shows?q="+query
         guard let urlRequest = URL(string: url) else{
             completion([],APIClientError.invalidURL(reason: "Invalid URL: \(url)"))
             return

@@ -15,7 +15,7 @@ struct ACShow:Codable{
     let image:ACPoster?
     let schedule:ACSchedule
     let genres:[String]
-    let summary:String
+    let summary:String?
     let favourite:Bool = false
 }
 
@@ -25,7 +25,7 @@ struct ACEpisode:Codable{
     let name:String
     let season:Int
     let number:Int
-    let summary:String
+    let summary:String?
     let image:ACPoster?
 }
 

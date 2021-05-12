@@ -9,7 +9,6 @@
 import UIKit
 
 
-
 class ShowCollectionViewController: UICollectionViewController {
     
     private let reuseIdentifier = "ShowCellIdentifier"
@@ -17,6 +16,8 @@ class ShowCollectionViewController: UICollectionViewController {
     private var imageCache:[Int:UIImage] = [:]
     private var pageOffset:Int = 0
     private var isRequestingData:Bool = false
+    private var dataSearchCache:[ACShow] = []
+    private var isSearchingData:Bool = false
     
     // UICollectionViewDelegateFlowLayout Params
     private let sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
@@ -28,6 +29,9 @@ class ShowCollectionViewController: UICollectionViewController {
         
         // For the sek of the clearness I'm using requestData()
         self.requestData(page: self.pageOffset)
+        
+        self.settupSearchBar()
+        
         
     }
 
@@ -47,11 +51,18 @@ class ShowCollectionViewController: UICollectionViewController {
 
             let localIndexPath:IndexPath = indexPathList[0]
             if let detailVC = segue.destination as? ShowDetailViewController {
-                detailVC.show = self.dataCache[localIndexPath.row]
+                
+                let showToDetail:ACShow
+                if isSearchingData {
+                    showToDetail = self.dataSearchCache[localIndexPath.row]
+                } else {
+                    showToDetail = self.dataCache[localIndexPath.row]
+                }
+                
+                detailVC.show = showToDetail
             }
         }
     }
-    
     
     func requestData(page:Int){
         self.isRequestingData = true
@@ -69,13 +80,46 @@ class ShowCollectionViewController: UICollectionViewController {
             }
         }
     }
+    
+    func requestSearchData(string:String){
+        self.isRequestingData = true
+        
+        APIClient.shared.getShows(byQuery: string) { (data, error) in
+            guard error == nil else {
+                print(error.debugDescription)
+                self.isRequestingData = false
+                return
+            }
+            
+            self.dataSearchCache = data
+            DispatchQueue.main.async {
+                self.collectionView?.reloadData()
+                self.isRequestingData = false
+            }
+        }
+    }
 
+    func settupSearchBar(){
+        let searchBar = UISearchBar()
+        
+        searchBar.delegate = self
+        searchBar.sizeToFit()
+        searchBar.barStyle = UIBarStyle.blackTranslucent
+        searchBar.isTranslucent = true
+        searchBar.placeholder = "Search for Shows"
+        navigationItem.titleView = searchBar
+    }
+    
     // MARK: UICollectionViewDataSource
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if isSearchingData {
+            return self.dataSearchCache.count
+        }
+        
         return self.dataCache.count
     }
 
@@ -83,7 +127,13 @@ class ShowCollectionViewController: UICollectionViewController {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.reuseIdentifier, for: indexPath) as! ShowCollectionViewCell
         
-        let show = self.dataCache[indexPath.row]
+        let show:ACShow
+        if isSearchingData {
+            show = self.dataSearchCache[indexPath.row]
+        } else {
+            show = self.dataCache[indexPath.row]
+        }
+        
         
         // Configure the cell
         cell.name.text = show.name
@@ -165,4 +215,32 @@ extension ShowCollectionViewController:UICollectionViewDelegateFlowLayout{
         
         return CGSize(width: collectionView.frame.width, height: 75)
     }
+
+}
+
+extension ShowCollectionViewController:UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if let searchText = searchBar.text{
+            self.isSearchingData = true
+            self.requestSearchData(string: searchText)
+        }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty{
+            self.isSearchingData = false
+            DispatchQueue.main.async {
+                self.collectionView?.reloadData()
+            }
+        }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.isSearchingData = false
+        DispatchQueue.main.async {
+            self.collectionView?.reloadData()
+        }
+    }
+    
 }
