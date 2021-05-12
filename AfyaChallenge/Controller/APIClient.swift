@@ -10,6 +10,8 @@ import Foundation
 
 class APIClient{
     
+    static let shared = APIClient()
+    
     enum APIClientError:Error{
         case invalidURL(reason: String)
     }

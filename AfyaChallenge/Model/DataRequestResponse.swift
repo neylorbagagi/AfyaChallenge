@@ -26,7 +26,7 @@ struct ACEpisode:Codable{
     let season:Int
     let number:Int
     let summary:String
-    let image:ACPoster
+    let image:ACPoster?
 }
 
 // ACQueryResponse Model
