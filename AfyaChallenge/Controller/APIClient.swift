@@ -6,6 +6,10 @@
 //  Copyright © 2021 Cyanu. All rights reserved.
 //
 
+
+/// TODO: RRFACTOR THIS CLASS USING <T:CLASS TYPING>
+/// https://medium.com/flawless-app-stories/s-o-l-i-d-principle-with-swift-b42f597ba7e2
+
 import Foundation
 
 class APIClient{
