@@ -14,6 +14,8 @@ class ShowCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        
         self.poster = UIImageView(frame: contentView.frame)
         self.poster.layer.cornerRadius = 6
 

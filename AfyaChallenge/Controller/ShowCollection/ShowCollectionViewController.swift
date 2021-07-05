@@ -20,7 +20,7 @@ class ShowCollectionViewController: UICollectionViewController, ShowCollectionVi
         self.collectionDelegate = ShowCollectionViewDelegate()
         self.collectionView?.delegate = self.collectionDelegate
         
-        self.collectionDataSource = ShowCollectionViewData()
+        self.collectionDataSource = ShowCollectionViewData(self.collectionView!)
         self.collectionView?.dataSource = self.collectionDataSource
         self.collectionDataSource?.delegate = self
         
@@ -33,13 +33,11 @@ class ShowCollectionViewController: UICollectionViewController, ShowCollectionVi
         // Dispose of any resources that can be recreated.
     }
     
-    
-    func ccllectionViewData(didDataUpdated data: [ACShow]) {
+    func ccllectionViewData(_ collectionView: UICollectionView, didDataUpdated data: [ACShow]) {
         DispatchQueue.main.async {
             self.collectionView?.reloadData()
         }
     }
-    
 
 }
 

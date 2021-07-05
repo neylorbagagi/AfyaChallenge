@@ -10,6 +10,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Bold.otf">
+            <string>SFProText-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Afya Challenge-->
         <scene sceneID="8CZ-Vf-Hno">
@@ -25,7 +30,7 @@
                         </textAttributes>
                     </navigationBar>
                     <connections>
-                        <segue destination="h5V-n4-GZY" kind="relationship" relationship="rootViewController" id="fEP-oR-xCT"/>
+                        <segue destination="ddH-db-evg" kind="relationship" relationship="rootViewController" id="clZ-Wj-enr"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EcH-XP-LFw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -37,7 +42,7 @@
             <objects>
                 <collectionViewController id="h5V-n4-GZY" customClass="ShowCollectionViewController" customModule="AfyaChallenge" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="GfG-fd-Ib7">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="724"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="6" minimumInteritemSpacing="6" id="Eio-My-Ccg">
@@ -85,7 +90,22 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WSP-vl-IqT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-106.40000000000001" y="121.88905547226388"/>
+            <point key="canvasLocation" x="-79" y="820"/>
+        </scene>
+        <!--Home Table View Controller-->
+        <scene sceneID="rqX-OB-FEs">
+            <objects>
+                <tableViewController id="ddH-db-evg" customClass="HomeTableViewController" customModule="AfyaChallenge" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="vBB-Y4-lUz">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="724"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="uLB-vT-3oa"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EJo-zZ-7Kc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-78" y="118"/>
         </scene>
         <!--Show Detail View Controller-->
         <scene sceneID="jLX-ip-R5Y">
@@ -107,7 +127,7 @@
                                     <constraint firstAttribute="width" constant="168" id="5ya-Pe-R14"/>
                                     <constraint firstAttribute="height" constant="47" id="CEO-Du-1Q6"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.82745098039999998" green="0.10980392160000001" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -215,13 +235,13 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The Fellowship of the Ring" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cpm-Dg-Lye">
-                                <rect key="frame" x="16" y="303" width="343" height="20.333333333333314"/>
-                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="17"/>
+                                <rect key="frame" x="16" y="303" width="343" height="25.333333333333314"/>
+                                <fontDescription key="fontDescription" name="SFProText-Bold" family="SF Pro Text" pointSize="21"/>
                                 <color key="textColor" red="0.82745098039999998" green="0.10980392160000001" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kYw-0u-f9Q">
-                                <rect key="frame" x="16" y="383.66666666666674" width="343" height="394.33333333333326"/>
+                                <rect key="frame" x="16" y="388.66666666666674" width="343" height="389.33333333333326"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" red="0.29411764709999999" green="0.29411764709999999" blue="0.29411764709999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -229,13 +249,13 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="S" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uP7-oE-32S">
-                                <rect key="frame" x="16" y="332" width="343" height="20.333333333333314"/>
+                                <rect key="frame" x="16" y="337" width="343" height="20.333333333333314"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                 <color key="textColor" red="0.82745098039999998" green="0.10980392160000001" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HF6-4F-Y7k">
-                                <rect key="frame" x="16" y="359.66666666666669" width="343" height="16"/>
+                                <rect key="frame" x="16" y="364.66666666666669" width="343" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="94H-ln-XST"/>
                                 </constraints>

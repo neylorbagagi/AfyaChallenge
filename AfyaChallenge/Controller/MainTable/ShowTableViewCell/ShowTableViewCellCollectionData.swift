@@ -1,63 +1,55 @@
 //
-//  ShowCollectionViewDataSource.swift
+//  ShowTableViewCellCollectionData.swift
 //  AfyaChallenge
 //
-//  Created by Neylor Bagagi on 22/05/21.
+//  Created by Neylor Bagagi on 27/05/21.
 //  Copyright © 2021 Cyanu. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-protocol ShowCollectionViewDataDelegate {
+class ShowTableViewCellCollectionData:NSObject,UICollectionViewDataSource{
     
-    func ccllectionViewData(_ collectionView: UICollectionView, didDataUpdated data:[ACShow])
+    private var dataCache:[ACShow] {
+        didSet {
+            DispatchQueue.main.async {
+                self.collectionView?.reloadData()
+            }
+        }
+    }
     
-}
-
-class ShowCollectionViewData:NSObject,UICollectionViewDataSource{
-    
-    private var dataCache:[ACShow] = []
     private var imageCache:[Int:UIImage] = [:]
-    private var pageOffset:Int = 0
-    private var isRequestingData:Bool = false
-    private var dataSearchCache:[ACShow] = []
-    private var isSearchingData:Bool = false
     private var collectionView:UICollectionView?
     
-    var delegate:ShowCollectionViewDataDelegate?
-    
-    init(_ collectionView:UICollectionView) {
+    override init() {
+        self.dataCache = []
         super.init()
-        self.collectionView = collectionView
         self.requestData(page: 0)
     }
     
     func requestData(page:Int){
-        self.isRequestingData = true
         APIClient.shared.getShows(forPage: page) { (data, error) in
             guard error == nil else {
                 print(error.debugDescription)
-                self.isRequestingData = false
                 return
             }
-            self.pageOffset += 1
-            self.dataCache = self.dataCache + data
-
-            DispatchQueue.main.async {
-                self.collectionView?.reloadData()
-            }
             
-//            if let delegate = self.delegate{
-//                delegate.ccllectionViewData(self.collectionView!, didDataUpdated: self.dataCache)
-//            }
-
-            self.isRequestingData = false
+            self.dataCache = self.dataCache + data
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.dataCache.count
+        self.collectionView = collectionView
+        
+        if self.dataCache.count <= 10 {
+            return self.dataCache.count
+        } else {
+            return 10
+        }
+        
+        
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -68,9 +60,24 @@ class ShowCollectionViewData:NSObject,UICollectionViewDataSource{
         // Configure the cell
         cell.poster.image = UIImage()
         
+        if let showImagePath = show.image?.medium {
+            if let imageUrl = URL(string: showImagePath){
+                DispatchQueue.global().async {
+                    if let imageData = try? Data(contentsOf: imageUrl){
+                        if let showPoster = UIImage(data: imageData){
+                            self.imageCache[show.id] = showPoster
+                            DispatchQueue.main.async {
+                                cell.poster.image = showPoster
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
         // TODO: Put it on a func
         if let showImagePath = show.image?.medium {
-            
+
             if let image = self.imageCache[show.id]{
                 cell.poster.image = image
             } else{
@@ -87,12 +94,11 @@ class ShowCollectionViewData:NSObject,UICollectionViewDataSource{
                     }
                 }
             }
-            
+
         }
-        
         
         
         return cell
     }
-
+    
 }
