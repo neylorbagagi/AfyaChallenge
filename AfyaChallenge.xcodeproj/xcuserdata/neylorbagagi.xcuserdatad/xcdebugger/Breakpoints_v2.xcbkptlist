@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "AfyaChallenge/Controller/ShowCollection/ShowCollectionViewData.swift"
-            timestampString = "643859096.662528"
+            filePath = "AfyaChallenge/View/New Group/HighlightTableViewCell.swift"
+            timestampString = "647480835.879704"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
-            landmarkName = "requestData(page:)"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "updated(viewModel:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,14 +25,237 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "AfyaChallenge/Controller/ShowCollection/ShowCollectionViewData.swift"
-            timestampString = "643859096.66266"
+            filePath = "AfyaChallenge/ViewModel/HighlightViewModel.swift"
+            timestampString = "647480835.8803"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
-            landmarkName = "requestData(page:)"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "requestData(limitedIn:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AfyaChallenge/ViewModel/HighlightViewModel.swift"
+            timestampString = "647480835.88139"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "requestShowsHighlight(shows:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AfyaChallenge/ViewModel/HighlightViewModel.swift"
+            timestampString = "647480835.8818901"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "requestShowsHighlight(shows:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AfyaChallenge/ViewModel/HighlightViewModel.swift"
+            timestampString = "647480835.882338"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "requestShowsHighlight(shows:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AfyaChallenge/ViewModel/HighlightViewModel.swift"
+            timestampString = "647480835.882789"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
+            landmarkName = "requestShows(idList:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AfyaChallenge/ViewModel/HighlightViewModel.swift"
+            timestampString = "647480835.8832279"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
+            landmarkName = "requestShowsHighlight(shows:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AfyaChallenge.HighlightViewModel.requestShowsHighlight(shows: Swift.Array&lt;AfyaChallenge.ACShow&gt;) -&gt; ()"
+                  moduleName = "AfyaChallenge"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/neylorbagagi/Developer/Swift/AfyaChallenge/AfyaChallenge/ViewModel/HighlightViewModel.swift"
+                  timestampString = "647480836.511151"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "62"
+                  endingLineNumber = "62"
+                  offsetFromSymbolStart = "1287">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;AfyaChallenge.ACShowImage&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in AfyaChallenge.HighlightViewModel.requestShowsHighlight(shows: Swift.Array&lt;AfyaChallenge.ACShow&gt;) -&gt; ()"
+                  moduleName = "AfyaChallenge"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/neylorbagagi/Developer/Swift/AfyaChallenge/AfyaChallenge/ViewModel/HighlightViewModel.swift"
+                  timestampString = "647480836.514891"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "63"
+                  endingLineNumber = "63"
+                  offsetFromSymbolStart = "61">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AfyaChallenge/ViewModel/HighlightViewModel.swift"
+            timestampString = "647480835.883671"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "requestShowsHighlight(shows:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;AfyaChallenge.ACShowImage&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in AfyaChallenge.HighlightViewModel.requestShowsHighlight(shows: Swift.Array&lt;AfyaChallenge.ACShow&gt;) -&gt; ()"
+                  moduleName = "AfyaChallenge"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/neylorbagagi/Developer/Swift/AfyaChallenge/AfyaChallenge/ViewModel/HighlightViewModel.swift"
+                  timestampString = "647480836.537675"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "69"
+                  endingLineNumber = "69"
+                  offsetFromSymbolStart = "519">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (AfyaChallenge.ACShowImage) -&gt; Swift.Bool in closure #1 (Swift.Optional&lt;Swift.Array&lt;AfyaChallenge.ACShowImage&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in AfyaChallenge.HighlightViewModel.requestShowsHighlight(shows: Swift.Array&lt;AfyaChallenge.ACShow&gt;) -&gt; ()"
+                  moduleName = "AfyaChallenge"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/neylorbagagi/Developer/Swift/AfyaChallenge/AfyaChallenge/ViewModel/HighlightViewModel.swift"
+                  timestampString = "647480836.542177"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "69"
+                  endingLineNumber = "69"
+                  offsetFromSymbolStart = "18">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AfyaChallenge/ViewModel/HighlightViewModel.swift"
+            timestampString = "647480835.8841029"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "requestShowsHighlight(shows:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;AfyaChallenge.ACShowImage&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in AfyaChallenge.HighlightViewModel.requestShowsHighlight(shows: Swift.Array&lt;AfyaChallenge.ACShow&gt;) -&gt; ()"
+                  moduleName = "AfyaChallenge"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/neylorbagagi/Developer/Swift/AfyaChallenge/AfyaChallenge/ViewModel/HighlightViewModel.swift"
+                  timestampString = "647480836.554333"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "241">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;AfyaChallenge.ACShowImage&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in AfyaChallenge.HighlightViewModel.requestShowsHighlight(shows: Swift.Array&lt;AfyaChallenge.ACShow&gt;) -&gt; ()"
+                  moduleName = "AfyaChallenge"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/neylorbagagi/Developer/Swift/AfyaChallenge/AfyaChallenge/ViewModel/HighlightViewModel.swift"
+                  timestampString = "647480836.559276"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "2478">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (AfyaChallenge.ACShowImage) -&gt; Swift.Bool in closure #1 (Swift.Optional&lt;Swift.Array&lt;AfyaChallenge.ACShowImage&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in AfyaChallenge.HighlightViewModel.requestShowsHighlight(shows: Swift.Array&lt;AfyaChallenge.ACShow&gt;) -&gt; ()"
+                  moduleName = "AfyaChallenge"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/neylorbagagi/Developer/Swift/AfyaChallenge/AfyaChallenge/ViewModel/HighlightViewModel.swift"
+                  timestampString = "647480836.563411"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "12">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

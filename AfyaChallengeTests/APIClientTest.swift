@@ -67,6 +67,53 @@ class APIClientTest: XCTestCase {
         
     }
     
+    func testGetUpdates() {
+        
+        let requestExpectation = expectation(description: "request")
+        
+        APIClient().getUpdates() { (data, error) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(data)
+            XCTAssert((data?.keys.count)! > 0)
+            
+            requestExpectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10, handler: nil)
+        
+    }
+    
+    func testGetShowsFromList() {
+        
+        let requestExpectation = expectation(description: "request")
+        
+        APIClient().getShows(forList: [1,3,5]) { (data, error) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(data)
+            XCTAssert(data.count == 3)
+            requestExpectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10, handler: nil)
+        
+    }
+    
+    func testGetShowImage() {
+        
+        let requestExpectation = expectation(description: "request")
+        
+        APIClient().getShowImage(forShow: 216) { (data, error) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(data)
+            //XCTAssert(data.count == 3)
+            print(data)
+            requestExpectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10, handler: nil)
+        
+    }
+    
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {

@@ -11,7 +11,6 @@ import UIKit
 
 /// Family: SF Pro Text Font names: ["SFProText-LightItalic", "SFProText-Bold", "SFProText-Regular"]
 
-
 class HomeTableViewDelegate:NSObject, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -29,13 +28,13 @@ class HomeTableViewDelegate:NSObject, UITableViewDelegate {
         label.font = UIFont(name: "SFProText-Bold", size: 36)
         
         switch section {
-            case HomeTableViewSections.highlights.rawValue:
+            case HomeTableViewSections.Highlights.rawValue:
                 label.text = "Highlights"
                 return label
-            case HomeTableViewSections.watchNext.rawValue:
+            case HomeTableViewSections.WatchNext.rawValue:
                 label.text = "Watch Next"
                 return label
-            case HomeTableViewSections.new.rawValue:
+            case HomeTableViewSections.New.rawValue:
                 label.text = "New"
                 return label
             default:
