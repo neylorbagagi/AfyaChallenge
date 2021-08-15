@@ -1,26 +1,29 @@
 //
 //  APIClient.swift
-//  AfyaChallenge
+//  AfyaChallengeServices
 //
-//  Created by Neylor Bagagi
-//  Copyright © 2021 Cyanu. All rights reserved.
+//  Created by Neylor Bagagi on 11/08/21.
 //
 
 
-/// TODO: RRFACTOR THIS CLASS USING <T:CLASS TYPING>
-/// TODO: ADD Response object as .sucess or .fail
-/// https://medium.com/flawless-app-stories/s-o-l-i-d-principle-with-swift-b42f597ba7e2
 
 import Foundation
 
-class APIClient{
+public enum APIClientShowUpdatePeriod:String{
+    case all
+    case day
+    case week
+    case month
+}
+
+class APIClient {
     
-    static let shared = APIClient()
+    static let share = APIClient()
     
     enum APIClientError:Error{
         case invalidURL(reason: String)
     }
-    
+
     /// This function is only responsible for execute the api requests
     /// - Parameters:
     ///     - url: `URL()`
@@ -28,24 +31,30 @@ class APIClient{
     ///     - data: Data?,
     ///     - response: Response?,
     ///     - error: Error?
-    private func apiRequest(url:URL, completion: @escaping (_ data:Data?, _ response:URLResponse?, _ error:Error?) -> Void){
+    private func apiRequest<T:Codable>(url:URL, type:T.Type, completion: @escaping (_ data:T?,_ response:URLResponse?,_ error:Error?) -> Void){
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard error == nil else {
-                completion(nil,nil,APIClientError.invalidURL(reason: "Invalid URL: \(url.absoluteString)"))
+                completion(nil,nil,error)
                 return
             }
-            completion(data,response,nil)
-            }.resume()
+            
+            do{
+                let decoder = JSONDecoder()
+                let decodedData = try decoder.decode(T.self, from: data!)
+                completion(decodedData,nil, nil)
+            } catch let error {
+                completion(nil,nil,error)
+            }
+        }.resume()
     }
 
-    
-    /// Returns shows index decoded data to ShowResponseRequest model
+    /// Returns shows index decoded data to ShowRequestResponse model
     /// - Parameters:
     ///     - page: Int
     /// - Returns:
-    ///     - data: [ShowResponseRequest], I was using optional but, it's easier to return empty array for now
+    ///     - data: [ShowRequestResponse], I was using optional but, it's easier to return empty array for now
     ///     - error: Error?
-    func getShows(forPage page:Int, completion: @escaping (_ data:[ShowResponseRequest],_ error:Error?) -> Void) {
+    func getShows(forPage page:Int, completion: @escaping (_ data:[ShowRequestResponse],_ error:Error?) -> Void) {
         
         let url = "https://api.tvmaze.com/shows?page=\(page)"
         guard let urlRequest = URL(string: url) else{
@@ -53,19 +62,12 @@ class APIClient{
             return
         }
         
-        self.apiRequest(url: urlRequest) { (data, response, error) in
-            guard let data = data else{
+        self.apiRequest(url: urlRequest, type:[ShowRequestResponse].self) { (data, response, error) in
+            guard let data = data, error == nil else {
                 completion([],error)
                 return
             }
-            
-            do{
-                let decoder = JSONDecoder()
-                let decodedData = try decoder.decode([ShowResponseRequest].self, from: data)
-                completion(decodedData,nil)
-            } catch let error {
-                completion([],error)
-            }
+            completion(data,nil)
         }
     }
     
@@ -73,9 +75,9 @@ class APIClient{
     /// - Parameters:
     ///     - id: Int
     /// - Returns:
-    ///     - data: ShowResponseRequest
+    ///     - data: ShowRequestResponse
     ///     - error: Error?
-    func getShow(forId id:Int, completion: @escaping (_ data:ShowResponseRequest?,_ error:Error?) -> Void) {
+    func getShow(forId id:Int, completion: @escaping (_ data:ShowRequestResponse?,_ error:Error?) -> Void) {
         
         let url = "https://api.tvmaze.com/shows/\(id)"
         guard let urlRequest = URL(string: url) else{
@@ -83,177 +85,99 @@ class APIClient{
             return
         }
         
-        self.apiRequest(url: urlRequest) { (data, response, error) in
-            guard let data = data else{
+        self.apiRequest(url: urlRequest, type:ShowRequestResponse.self) { (data, response, error) in
+            guard error == nil else {
                 completion(nil,error)
                 return
             }
-            
-            do{
-                let decoder = JSONDecoder()
-                let decodedData = try decoder.decode(ShowResponseRequest.self, from: data)
-                completion(decodedData,nil)
-            } catch let error {
-                completion(nil,error)
-            }
+            completion(data,nil)
         }
     }
     
+    /// Returns all episodes from a show and decode then to EpisodeResponseRequest model
+    /// - Parameters:
+    ///     - id: Int
+    /// - Returns:
+    ///     - data: EpisodeResponseRequest
+    ///     - error: Error?
+    func getShowEpisodes(forShow id:Int, completion: @escaping (_ data:[EpisodeRequestResponse],_ error:Error?) -> Void) {
+        
+        let url = "https://api.tvmaze.com/seasons/\(id)/episodes"
+        guard let urlRequest = URL(string: url) else{
+            completion([],APIClientError.invalidURL(reason: "Invalid URL: \(url)"))
+            return
+        }
+        
+        self.apiRequest(url: urlRequest, type:[EpisodeRequestResponse].self) { (data, response, error) in
+            guard let data = data, error == nil else {
+                completion([],error)
+                return
+            }
+            completion(data,nil)
+        }
+    }
     
+    /// A list of all images available for this show.
+    /// The image type can be "poster", "banner", "background", "typography", or NULL in case of legacy unclassified images.
+    /// - Parameters:
+    ///     - id: Int
+    /// - Returns:
+    ///     - data: ImageResponseRequest
+    ///     - error: Error?
+    func getShowImages(forShow id:Int, completion: @escaping (_ data:[ImageRequestResponse],_ error:Error?) -> Void) {
+        
+        let url = "https://api.tvmaze.com/shows/\(id)/images"
+        guard let urlRequest = URL(string: url) else{
+            completion([],APIClientError.invalidURL(reason: "Invalid URL: \(url)"))
+            return
+        }
+        
+        self.apiRequest(url: urlRequest, type:[ImageRequestResponse].self) { (data, response, error) in
+            guard let data = data, error == nil else {
+                completion([],error)
+                return
+            }
+            completion(data,nil)
+        }
+    }
     
+    /// A list of all shows in the TVmaze database and the timestamp when they were last updated.
+    /// Updating a direct or indirect child of a show will also mark the show itself as updated.
+    /// For example; creating, deleting or updating an episode or an episode's gallery item will
+    /// mark the episode's show as updated. It's possible to filter the resultset to only include
+    /// shows that have been updated in the past day (24 hours), week, or month.
+    /// - Parameters:
+    ///     - since: APIClientShowUpdatePeriod
+    ///     - completion: data:[String:Int]?, error:Error?
+    /// - Returns:
+    ///     - data: [ImageResponseRequest]
+    ///     - error: Error?
+    func getShowUpdates(since:APIClientShowUpdatePeriod, completion: @escaping (_ data:[String:Int]?,_ error:Error?) -> Void) {
+        
+        var url = ""
+        switch since {
+        case .day:
+            url = "https://api.tvmaze.com/updates/shows?since=day"
+        case .week:
+            url = "https://api.tvmaze.com/updates/shows?since=week"
+        case .month:
+            url = "https://api.tvmaze.com/updates/shows?since=month"
+        default:
+            url = "https://api.tvmaze.com/updates/shows"
+        }
+        
+        guard let urlRequest = URL(string: url) else{
+            completion(nil,APIClientError.invalidURL(reason: "Invalid URL: \(url)"))
+            return
+        }
+        
+        self.apiRequest(url: urlRequest, type:[String:Int].self) { (data, response, error) in
+            guard let data = data, error == nil else {
+                completion(nil,error)
+                return
+            }
+            completion(data,nil)
+        }
+    }
     
-    
-//    func getShows(forList list:[Int], completion: @escaping (_ data:[ShowResponseRequest],_ error:Error?) -> Void) {
-//
-//        var responseData:[ShowResponseRequest] = []
-//        let myGroup = DispatchGroup()
-//
-//        for id in list
-//        {
-//            myGroup.enter()
-//
-//            let url = "https://api.tvmaze.com/shows/\(id)"
-//            guard let urlRequest = URL(string: url) else{
-//                completion([],APIClientError.invalidURL(reason: "Invalid URL: \(url)"))
-//                return
-//            }
-//
-//            self.apiRequest(url: urlRequest) { (data, response, error) in
-//                guard let data = data else{
-//                    completion([],error)
-//                    myGroup.leave()
-//                    return
-//                }
-//
-//                do{
-//                    let decoder = JSONDecoder()
-//                    let decodedData = try decoder.decode(ShowResponseRequest.self, from: data)
-//                    responseData.append(decodedData)
-//                    myGroup.leave()
-//                } catch let error {
-//                    completion([],error)
-//                    myGroup.leave()
-//                }
-//            }
-//        }
-//
-//        myGroup.notify(queue: .main) {
-//            print("Finished all requests.")
-//            completion(responseData,nil)
-//        }
-//    }
-//
-//    /// Returns shows with query context
-//    /// - Parameters:
-//    ///     - query: String
-//    /// - Returns:
-//    ///     - data: [ACShow],
-//    ///     - error: Error?
-//    func getShows(byQuery query:String, completion: @escaping (_ data:[ShowResponseRequest],_ error:Error?) -> Void) {
-//
-//        let url = "https://api.tvmaze.com/search/shows?q="+query
-//        guard let urlRequest = URL(string: url) else{
-//            completion([],APIClientError.invalidURL(reason: "Invalid URL: \(url)"))
-//            return
-//        }
-//
-//        self.apiRequest(url: urlRequest) { (data, response, error) in
-//            guard let data = data else{
-//                completion([],error)
-//                return
-//            }
-//
-//            do{
-//                let decoder = JSONDecoder()
-//                let decodedQuery = try decoder.decode([ACQueryResponse].self, from: data)
-//                let decodedData = decodedQuery.map() {$0.show}
-//
-//                completion(decodedData,nil)
-//            } catch let error {
-//                completion([],error)
-//            }
-//        }
-//    }
-//
-//
-//    /// Returns episodes from a show
-//    /// - Parameters:
-//    ///     - id: Int
-//    /// - Returns:
-//    ///     - data: [ACEpisode]
-//    ///     - error: Error?
-//    func getEpisodes(forShow id:Int, completion: @escaping (_ data:[ACEpisode],_ error:Error?) -> Void) {
-//
-//        let url = "https://api.tvmaze.com/shows/\(id)/episodes"
-//        guard let urlRequest = URL(string: url) else{
-//            completion([],APIClientError.invalidURL(reason: "Invalid URL: \(url)"))
-//            return
-//        }
-//
-//        self.apiRequest(url: urlRequest) { (data, response, error) in
-//            guard let data = data else{
-//                completion([],error)
-//                return
-//            }
-//
-//            do{
-//                let decoder = JSONDecoder()
-//                let decodedData = try decoder.decode([ACEpisode].self, from: data)
-//                completion(decodedData,nil)
-//            } catch let error {
-//                completion([],error)
-//            }
-//        }
-//    }
-//
-//    func getUpdates(completion: @escaping (_ data:[String:Double]?,_ error:Error?) -> Void) {
-//
-//        let url = "https://api.tvmaze.com/updates/shows?since=day"
-//        guard let urlRequest = URL(string: url) else{
-//            completion(nil,APIClientError.invalidURL(reason: "Invalid URL: \(url)"))
-//            return
-//        }
-//
-//        self.apiRequest(url: urlRequest) { (data, response, error) in
-//            guard let data = data else{
-//                completion(nil,error)
-//                return
-//            }
-//
-//            do{
-//                let decoder = JSONDecoder()
-//                let decodedData = try decoder.decode([String:Double].self, from: data)
-//                completion(decodedData,error)
-//            } catch let error {
-//                completion(nil,error)
-//            }
-//        }
-//    }
-//
-//    func getShowImage(forShow id:Int, completion: @escaping (_ data:[ACShowImage]?,_ error:Error?) -> Void) {
-//
-//        let url = "https://api.tvmaze.com/shows/\(id)/images"
-//        guard let urlRequest = URL(string: url) else{
-//            completion(nil,APIClientError.invalidURL(reason: "Invalid URL: \(url)"))
-//            return
-//        }
-//
-//        self.apiRequest(url: urlRequest) { (data, response, error) in
-//            guard let data = data else{
-//                completion(nil,error)
-//                return
-//            }
-//
-//            do{
-//                let decoder = JSONDecoder()
-//                let decodedData = try decoder.decode([ACShowImage].self, from: data)
-//                completion(decodedData,nil)
-//            } catch let error {
-//                completion(nil,error)
-//            }
-//        }
-//    }
-//
-//
 }
-

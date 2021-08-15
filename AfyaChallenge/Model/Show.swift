@@ -1,26 +1,16 @@
 //
 //  Show.swift
-//  AfyaChallenge
+//  AfyaChallengeServices
 //
-//  Created by Neylor Bagagi on 31/07/21.
-//  Copyright © 2021 Cyanu. All rights reserved.
+//  Created by Neylor Bagagi on 13/08/21.
 //
 
 import Foundation
 import RealmSwift
 
-// This file was generated from JSON Schema using quicktype, do not modify it directly.
-// To parse the JSON, add this file to your project and do:
-//
-//   let show = try? newJSONDecoder().decode(Show.self, from: jsonData)
-
-
-/// TODO: UNDERsTAND decode for class https://stackoverflow.com/questions/29472935/cannot-decode-object-of-class
-import Foundation
-
 class Show:Object {
+    
     @Persisted(primaryKey: true) var id: Int
-    @Persisted var url: String
     @Persisted var name: String
     @Persisted var type: String
     @Persisted var language: String
@@ -29,124 +19,58 @@ class Show:Object {
     @Persisted var runtime: Int?
     @Persisted var averageRuntime: Int
     @Persisted var premiered: String
-    @Persisted var officialSite: String?
-    //@Persisted var schedule: Schedule?
+    @Persisted var scheduleTime: String
+    @Persisted var scheduleDays: List<String>
     @Persisted var rating: Double?
     @Persisted var weight: Int
-    @Persisted var network: String?
-    @Persisted var webChannel: String?
-    //@Persisted var image: Poster
+    @Persisted var network:String
+    @Persisted var webChannel:String
+    @Persisted var images: Map<String,String>
     @Persisted var summary: String
     @Persisted var updated: Int
     @Persisted var favourite: Bool
-    //schedule: Schedule?, image: Poster,
-    init(id: Int, url: String, name: String, type: String, language: String, genres: List<String>, status: String, runtime: Int?, averageRuntime: Int, premiered: String, officialSite: String?,  rating: Double?, weight: Int, network: String?, webChannel: String?, summary: String, updated: Int) {
-        super.init()
-        self.id = id
-        self.url = url
-        self.name = name
-        self.type = type
-        self.language = language
-        self.genres = genres
-        self.status = status
-        self.runtime = runtime
-        self.averageRuntime = averageRuntime
-        self.premiered = premiered
-        self.officialSite = officialSite
-        //self.schedule = schedule
-        self.rating = rating
-        self.weight = weight
-        self.network = network
-        self.webChannel = webChannel
-        //self.image = image
-        self.summary = summary
-        self.updated = updated
+    @Persisted var episodes: List<Episode>
+    
+    convenience init(_ object:ShowRequestResponse) throws {
+        self.init()
+        self.id = object.id
+        self.name = object.name
+        self.type = object.type
+        self.language = object.language
+        self.genres = Self.arrayToList(object.genres)
+        self.status = object.status
+        self.runtime = object.runtime ?? 0
+        self.averageRuntime = object.averageRuntime
+        self.premiered = object.premiered
+        self.scheduleTime = object.schedule.time
+        self.scheduleDays = Self.arrayToList(object.schedule.days)
+        self.rating = object.rating.average ?? 0.0
+        self.weight = object.weight
+        self.network = object.network?.name ?? "Unknow"
+        self.webChannel = object.webChannel?.name ?? "Unknow"
+        self.images["medium"] = object.image.medium
+        self.images["original"] = object.image.original
+        self.summary = object.summary
+        self.updated = object.updated
         self.favourite = false
+        self.episodes = List<Episode>()
     }
     
-    convenience init(fromResponse object:ShowResponseRequest) {
-        
-        //let newSchedule = Schedule(time:object.schedule.time, days: object.schedule.days)
-        //let newPoster = Poster(medium: object.image.medium, original: object.image.original)
-        
-        self.init(id: object.id,
-                  url: object.url,
-                  name: object.name,
-                  type: object.type,
-                  language: object.language,
-                  genres: realmListFromArray(object.genres),
-                  status: object.status,
-                  runtime: object.runtime,
-                  averageRuntime: object.averageRuntime,
-                  premiered: object.premiered,
-                  officialSite: object.officialSite,
-                  //schedule: newSchedule,
-                  rating: object.rating.average,
-                  weight: object.weight,
-                  network: object.network?.name,
-                  webChannel: object.network?.name,
-                  //image: newPoster,
-                  summary: object.summary,
-                  updated: object.updated)
-        
+    private static func arrayToList<T>(_ array:Array<T>) -> List<T> {
+        let list = List<T>()
+        for item in array {
+            list.append(item)
+        }
+        return list
     }
     
-    static func showsFromResponse(data:[ShowResponseRequest]) -> [Show] {
-        var response:[Show] = []
-        for item in data{
-            response.append(Show(fromResponse: item))
+    static func showsFromAPIResponse(_ objects:[ShowRequestResponse]) throws -> List<Show> {
+        let response:List<Show> = List<Show>()
+        for item in objects {
+            response.append(try Show(item))
         }
         return response
     }
-    
-    
-
 }
-
-// MARK: - Image
-class Poster: Object {
-    @Persisted var medium: String
-    @Persisted var original: String
-    @Persisted var wide: String
-
-    init(medium: String, original: String) {
-        self.medium = medium
-        self.original = original
-        self.wide = ""
-    }
-}
-
-
-// MARK: - Schedule
-
-//class Schedule: Object {
-//    @Persisted var time: String
-//    @Persisted var days: List<String>
-//    
-//    private init(time:String,days:List<String>) {
-//        self.time = time
-//        self.days = days
-//    }
-//    
-//    convenience init(time:String,days:[String]) {
-//        self.init(time:time,
-//                  days:realmListFromArray(days))
-//    }
-//}
-
-private func realmListFromArray(_ array:[String]) -> List<String> {
-    var response = List<String>()
-    
-    for item in array{
-        response.append(item)
-    }
-    
-    return response
-}
-
-
-
-
-
 
 

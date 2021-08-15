@@ -1,76 +1,144 @@
 //
 //  RealmManager.swift
-//  AfyaChallenge
+//  AfyaChallengeServices
 //
-//  Created by Neylor Bagagi on 31/07/21.
-//  Copyright © 2021 Cyanu. All rights reserved.
+//  Created by Neylor Bagagi on 14/08/21.
 //
 
 import Foundation
 import RealmSwift
 
-
-class Pet: Object {
-    @Persisted var name:String
-    
-    convenience init(name:String) {
-        self.init()
-        self.name = name
-    }
-}
-
 class RealmManager {
     
-    static let shared = RealmManager()
+    static let share = RealmManager()
     
-    func getShows(forPage page:Int, completion: @escaping (_ data:[Show], _ error:Error?) -> Void){
-        
-        /// TVMaza pagination brings 250 registers each request
-        let paginationLimit = 250
-        
-        let lastIdForPage:Int = page * paginationLimit
-        let firstIfForPage:Int = lastIdForPage - paginationLimit
-        
-        let realm = try! Realm()
-        var shows = realm.objects(Show.self).filter("id > \(firstIfForPage) AND id <= \(lastIdForPage)")
-        
-        if shows.count > 0 {
-            completion(Array(shows),nil)
+    func getShows(byPage page:Int, completion: @escaping (_ data:[Show],_ error:Error?) -> Void){
+   
+        guard let realm = try? Realm() else{
+            fatalError("Could not to load Realm")
         }
         
-        APIClient.shared.getShows(forPage:page) { (data,error) in
+        
+        /// Realm operation
+        /// If this processo is succeful return to main task
+        let dispatchGroup = DispatchGroup()
+        let maxItems = 250
+        let minId = (page*maxItems) + 1
+        let maxId = (page+1) * maxItems
+        
+        let realmShows = realm.objects(Show.self).filter("id >= \(minId) AND id <= \(maxId)")
+        if realmShows.count > 0{
+            completion(Array(realmShows), nil)
+            return
+        }
+        
+        
+        /// Networking operation
+        /// in case of Realm instance does not have the records for request page
+        /// this process will get it from API
+        var responseData:[ShowRequestResponse] = []
+        dispatchGroup.enter()
+        APIClient.share.getShows(forPage: page) { (data, error) in
             guard error == nil else{
                 completion([],error)
                 return
             }
-            
-            let decodedShows = Show.showsFromResponse(data: data)
-            
-            try! realm.write {
-                for show in decodedShows{
-                    realm.add(show, update: Realm.UpdatePolicy.modified)
-                }
-                
-                shows = realm.objects(Show.self).filter("id > \(firstIfForPage) AND id <= \(lastIdForPage)")
-                completion(Array(shows),nil)
+            responseData = data
+            dispatchGroup.leave()
+        }
+        dispatchGroup.wait()
+        
+        
+        
+        do {
+            let shows = try Show.showsFromAPIResponse(responseData)
+            saveShows(shows: shows)
+            completion(Array(shows),nil)
+        } catch let error {
+            completion([],error)
+        }
+        
+        
+    }
+    
+    func getEpisodes(byShow show:Show, completion: @escaping (_ data:[Episode], _ error:Error?) -> Void) -> Show {
+        
+        guard let realm = try? Realm() else{
+            fatalError("Could not to load Realm")
+        }
+        
+        let dispatchGroup = DispatchGroup()
+        var responseData:[EpisodeRequestResponse] = []
+        dispatchGroup.enter()
+        APIClient.share.getShowEpisodes(forShow: show.id) { (data, error) in
+            guard error == nil else{
+                completion([],error)
+                return
+            }
+            responseData = data
+            dispatchGroup.leave()
+        }
+        dispatchGroup.wait()
+        
+        do {
+            let episodes = try Episode.episodesFromAPIResponse(responseData)
+            try! realm.write{
+                show.episodes = episodes
+                realm.add(show)
+            }
+            completion(Array(episodes),nil)
+            return show
+        } catch let error {
+            completion([],error)
+            return show
+        }
+    }
+    
+    func getImages(byShow show:Show, completion: @escaping (_ data:String, _ error:Error?) -> Void) -> Show {
+        
+        guard let realm = try? Realm() else{
+            fatalError("Could not to load Realm")
+        }
+        
+        let dispatchGroup = DispatchGroup()
+        var responseData:[ImageRequestResponse] = []
+        dispatchGroup.enter()
+        APIClient.share.getShowImages(forShow: show.id) { (data, error) in
+            guard error == nil else{
+                completion("",error)
+                return
+            }
+            responseData = data
+            dispatchGroup.leave()
+        }
+        dispatchGroup.wait()
+        
+        do {
+            var images:[String] = []
+            let backgroundImages = responseData.filter({$0.type == "background"})
+            for image in backgroundImages{
+                images.append(image.resolutions.original.url)
             }
             
+            try realm.write{
+                show.images["background"] = images.first
+                realm.add(show)
+            }
+            completion(images.first!,nil)
+            return show
+        } catch let error {
+            completion("",error)
+            return show
         }
-        
     }
     
-    
-    
-    func hello() {
-        let realm = try! Realm()
-        
-        let pet = Pet(name: "Gato")
-        try! realm.write() {
-            realm.add(pet)
+    private func saveShows(shows:List<Show>){
+        guard let realm = try? Realm() else{
+            fatalError("Could not to load Realm")
         }
-        
-        print("hello")
+        try! realm.write{
+            realm.add(shows, update: Realm.UpdatePolicy.modified)
+        }
     }
-    
     
 }

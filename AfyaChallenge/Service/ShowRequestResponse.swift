@@ -1,15 +1,14 @@
 //
 //  ShowRequestResponse.swift
-//  AfyaChallenge
+//  AfyaChallengeServices
 //
-//  Created by Neylor Bagagi
-//  Copyright © 2021 Cyanu. All rights reserved.
+//  Created by Neylor Bagagi on 11/08/21.
 //
 
 import Foundation
 
 // MARK: - ShowElement
-struct ShowResponseRequest: Codable {
+struct ShowRequestResponse: Codable {
     let id: Int
     let url: String
     let name: String
@@ -21,12 +20,11 @@ struct ShowResponseRequest: Codable {
     let averageRuntime: Int
     let premiered: String
     let officialSite: String?
-    let schedule: ScheduleResponseRequest
-    let rating: RatingResponseRequest
+    let schedule: ShowRequestResponseSchedule
+    let rating: ShowRequestResponseRating
     let weight: Int
-    let network: NetworkResponseRequest?
-    let webChannel: NetworkResponseRequest?
-    let image: ImageResponseRequest
+    let network, webChannel: ShowRequestResponseNetwork?
+    let image: ShowRequestResponseImage
     let summary: String
     let updated: Int
 
@@ -35,26 +33,25 @@ struct ShowResponseRequest: Codable {
     }
     
     // MARK: - Image
-    struct ImageResponseRequest: Codable {
+    struct ShowRequestResponseImage: Codable {
         let medium, original: String
     }
 
     // MARK: - Network
-    struct NetworkResponseRequest: Codable {
+    struct ShowRequestResponseNetwork: Codable {
         let name: String
     }
 
     // MARK: - Rating
-    struct RatingResponseRequest: Codable {
+    struct ShowRequestResponseRating: Codable {
         let average: Double?
     }
 
     // MARK: - Schedule
-    struct ScheduleResponseRequest: Codable {
+    struct ShowRequestResponseSchedule: Codable {
         let time: String
         let days: [String]
     }
 }
-
 
 
