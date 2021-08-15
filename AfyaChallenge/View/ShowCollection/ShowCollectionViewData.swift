@@ -11,17 +11,17 @@ import UIKit
 
 protocol ShowCollectionViewDataDelegate {
     
-    func ccllectionViewData(_ collectionView: UICollectionView, didDataUpdated data:[ACShow])
+    func ccllectionViewData(_ collectionView: UICollectionView, didDataUpdated data:[Show])
     
 }
 
 class ShowCollectionViewData:NSObject,UICollectionViewDataSource{
     
-    private var dataCache:[ACShow] = []
+    private var dataCache:[Show] = []
     private var imageCache:[Int:UIImage] = [:]
     private var pageOffset:Int = 0
     private var isRequestingData:Bool = false
-    private var dataSearchCache:[ACShow] = []
+    private var dataSearchCache:[Show] = []
     private var isSearchingData:Bool = false
     private var collectionView:UICollectionView?
     
@@ -35,25 +35,25 @@ class ShowCollectionViewData:NSObject,UICollectionViewDataSource{
     
     func requestData(page:Int){
         self.isRequestingData = true
-        APIClient.shared.getShows(forPage: page) { (data, error) in
-            guard error == nil else {
-                print(error.debugDescription)
-                self.isRequestingData = false
-                return
-            }
-            self.pageOffset += 1
-            self.dataCache = self.dataCache + data
-
-            DispatchQueue.main.async {
-                self.collectionView?.reloadData()
-            }
-            
-//            if let delegate = self.delegate{
-//                delegate.ccllectionViewData(self.collectionView!, didDataUpdated: self.dataCache)
+//        APIClient.shared.getShows(forPage: page) { (data, error) in
+//            guard error == nil else {
+//                print(error.debugDescription)
+//                self.isRequestingData = false
+//                return
 //            }
-
-            self.isRequestingData = false
-        }
+//            self.pageOffset += 1
+//            self.dataCache = self.dataCache + data
+//
+//            DispatchQueue.main.async {
+//                self.collectionView?.reloadData()
+//            }
+//            
+////            if let delegate = self.delegate{
+////                delegate.ccllectionViewData(self.collectionView!, didDataUpdated: self.dataCache)
+////            }
+//
+//            self.isRequestingData = false
+//        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -69,26 +69,26 @@ class ShowCollectionViewData:NSObject,UICollectionViewDataSource{
         cell.poster.image = UIImage()
         
         // TODO: Put it on a func
-        if let showImagePath = show.image?.medium {
-            
-            if let image = self.imageCache[show.id]{
-                cell.poster.image = image
-            } else{
-                if let imageUrl = URL(string: showImagePath){
-                    DispatchQueue.global().async {
-                        if let imageData = try? Data(contentsOf: imageUrl){
-                            if let showPoster = UIImage(data: imageData){
-                                self.imageCache[show.id] = showPoster
-                                DispatchQueue.main.async {
-                                    cell.poster.image = showPoster
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            
-        }
+//        if let showImagePath = show.image?.medium {
+//
+//            if let image = self.imageCache[show.id]{
+//                cell.poster.image = image
+//            } else{
+//                if let imageUrl = URL(string: showImagePath){
+//                    DispatchQueue.global().async {
+//                        if let imageData = try? Data(contentsOf: imageUrl){
+//                            if let showPoster = UIImage(data: imageData){
+//                                self.imageCache[show.id] = showPoster
+//                                DispatchQueue.main.async {
+//                                    cell.poster.image = showPoster
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//
+//        }
         
         
         

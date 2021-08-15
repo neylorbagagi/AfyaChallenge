@@ -10,7 +10,7 @@ import UIKit
 
 class EpisodeDetailViewController: UIViewController {
 
-    var episode:ACEpisode?
+    var episode:Episode?
     
     @IBOutlet weak var poster: UIImageView!
     @IBOutlet weak var name: UILabel!
@@ -23,7 +23,7 @@ class EpisodeDetailViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         if let episode = self.episode{
-            configureView(withEpisode:episode)
+            //configureView(withEpisode:episode)
         }
     }
 
@@ -32,27 +32,27 @@ class EpisodeDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func configureView(withEpisode episode:ACEpisode) {
-        
-        self.title = episode.name
-        self.name.text = episode.name
-        self.number.text = "Episode: \(episode.number)"
-        self.season.text = "Season: \(episode.season)"
-        self.summary.text = episode.summary
-        
-        if let episodeImagePath = episode.image?.medium {
-            if let imageUrl = URL(string: episodeImagePath){
-                DispatchQueue.global().async {
-                    if let imageData = try? Data(contentsOf: imageUrl){
-                        if let episodePoster = UIImage(data: imageData){
-                            DispatchQueue.main.async {
-                                self.poster.image = episodePoster
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+//    func configureView(withEpisode episode:Episode) {
+//
+//        self.title = episode.name
+//        self.name.text = episode.name
+//        self.number.text = "Episode: \(episode.number)"
+//        self.season.text = "Season: \(episode.season)"
+//        self.summary.text = episode.summary
+//
+//        if let episodeImagePath = episode.image?.medium {
+//            if let imageUrl = URL(string: episodeImagePath){
+//                DispatchQueue.global().async {
+//                    if let imageData = try? Data(contentsOf: imageUrl){
+//                        if let episodePoster = UIImage(data: imageData){
+//                            DispatchQueue.main.async {
+//                                self.poster.image = episodePoster
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 }

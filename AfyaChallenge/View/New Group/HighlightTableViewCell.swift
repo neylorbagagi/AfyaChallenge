@@ -40,7 +40,7 @@ class HighlightTableViewCell: UITableViewCell, HighlightViewModelObserver {
         self.contentView.addSubview(self.collectionView!)
     }
 
-    func updated(viewModel data: [ACShow]) {
+    func updated(viewModel data: [Show]) {
         DispatchQueue.main.async {
             self.collectionView?.reloadData()
         }

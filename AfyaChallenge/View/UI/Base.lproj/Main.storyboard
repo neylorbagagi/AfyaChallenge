@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="7lc-f0-dJd">
-    <device id="retina5_9" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="h5V-n4-GZY">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -40,6 +37,7 @@
         <!--Show Collection View Controller-->
         <scene sceneID="gAv-Rq-wT0">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WSP-vl-IqT" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <collectionViewController id="h5V-n4-GZY" customClass="ShowCollectionViewController" customModule="AfyaChallenge" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="GfG-fd-Ib7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
@@ -88,7 +86,6 @@
                     </collectionView>
                     <navigationItem key="navigationItem" id="MK1-40-Xxh"/>
                 </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="WSP-vl-IqT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-79" y="820"/>
         </scene>
@@ -153,10 +150,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EpisodeCellIdentifier" id="8GB-fH-UFQ">
-                                        <rect key="frame" x="0.0" y="28" width="343" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="343" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8GB-fH-UFQ" id="hQf-ig-E3w">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <connections>
@@ -164,10 +161,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Wtt-R4-04T">
-                                        <rect key="frame" x="0.0" y="72" width="343" height="44"/>
+                                        <rect key="frame" x="0.0" y="71.666667938232422" width="343" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Wtt-R4-04T" id="VpH-rp-otl">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -181,6 +178,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="IsN-nm-Yug"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" red="0.29411764709999999" green="0.29411764709999999" blue="0.29411764709999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -205,7 +203,6 @@
                             <constraint firstItem="IsN-nm-Yug" firstAttribute="trailing" secondItem="oDc-7h-rqA" secondAttribute="trailing" constant="16" id="pnw-Gq-z3T"/>
                             <constraint firstItem="QeA-rn-784" firstAttribute="leading" secondItem="bOD-DI-qUY" secondAttribute="leading" id="sMs-RT-Qxb"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="IsN-nm-Yug"/>
                     </view>
                     <connections>
                         <outlet property="episodesTable" destination="6Iy-wy-0O5" id="zaL-tQ-J4k"/>
@@ -225,23 +222,23 @@
             <objects>
                 <viewController id="Emg-Us-8pI" customClass="EpisodeDetailViewController" customModule="AfyaChallenge" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nTa-Lc-yag">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="758"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="o1o-Hg-Dh8">
-                                <rect key="frame" x="0.0" y="44" width="375" height="251"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="251"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="251" id="BWY-S4-aFd"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The Fellowship of the Ring" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cpm-Dg-Lye">
-                                <rect key="frame" x="16" y="303" width="343" height="25.333333333333314"/>
+                                <rect key="frame" x="16" y="259" width="343" height="25.333333333333314"/>
                                 <fontDescription key="fontDescription" name="SFProText-Bold" family="SF Pro Text" pointSize="21"/>
                                 <color key="textColor" red="0.82745098039999998" green="0.10980392160000001" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kYw-0u-f9Q">
-                                <rect key="frame" x="16" y="388.66666666666674" width="343" height="389.33333333333326"/>
+                                <rect key="frame" x="16" y="344.66666666666674" width="343" height="379.33333333333326"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" red="0.29411764709999999" green="0.29411764709999999" blue="0.29411764709999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -249,13 +246,13 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="S" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uP7-oE-32S">
-                                <rect key="frame" x="16" y="337" width="343" height="20.333333333333314"/>
+                                <rect key="frame" x="16" y="293" width="343" height="20.333333333333314"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                 <color key="textColor" red="0.82745098039999998" green="0.10980392160000001" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HF6-4F-Y7k">
-                                <rect key="frame" x="16" y="364.66666666666669" width="343" height="16"/>
+                                <rect key="frame" x="16" y="320.66666666666669" width="343" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="94H-ln-XST"/>
                                 </constraints>
@@ -264,6 +261,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="xP2-VZ-LLZ"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" red="0.29411764709999999" green="0.29411764709999999" blue="0.29411764709999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -288,7 +286,6 @@
                             <constraint firstItem="uP7-oE-32S" firstAttribute="leading" secondItem="xP2-VZ-LLZ" secondAttribute="leading" constant="16" id="sHf-qg-r5F"/>
                             <constraint firstItem="uP7-oE-32S" firstAttribute="top" secondItem="cpm-Dg-Lye" secondAttribute="bottom" constant="8.5" id="uYI-OA-EhU"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="xP2-VZ-LLZ"/>
                     </view>
                     <connections>
                         <outlet property="name" destination="cpm-Dg-Lye" id="QeG-Vo-pWm"/>

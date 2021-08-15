@@ -11,7 +11,7 @@ import UIKit
 
 class ShowTableViewCellCollectionData:NSObject,UICollectionViewDataSource{
     
-    private var dataCache:[ACShow] {
+    private var dataCache:[Show] {
         didSet {
             DispatchQueue.main.async {
                 self.collectionView?.reloadData()
@@ -29,14 +29,14 @@ class ShowTableViewCellCollectionData:NSObject,UICollectionViewDataSource{
     }
     
     func requestData(page:Int){
-        APIClient.shared.getShows(forPage: page) { (data, error) in
-            guard error == nil else {
-                print(error.debugDescription)
-                return
-            }
-            
-            self.dataCache = self.dataCache + data
-        }
+//        APIClient.shared.getShows(forPage: page) { (data, error) in
+//            guard error == nil else {
+//                print(error.debugDescription)
+//                return
+//            }
+//
+//            self.dataCache = self.dataCache + data
+//        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -60,42 +60,42 @@ class ShowTableViewCellCollectionData:NSObject,UICollectionViewDataSource{
         // Configure the cell
         cell.poster.image = UIImage()
         
-        if let showImagePath = show.image?.medium {
-            if let imageUrl = URL(string: showImagePath){
-                DispatchQueue.global().async {
-                    if let imageData = try? Data(contentsOf: imageUrl){
-                        if let showPoster = UIImage(data: imageData){
-                            self.imageCache[show.id] = showPoster
-                            DispatchQueue.main.async {
-                                cell.poster.image = showPoster
-                            }
-                        }
-                    }
-                }
-            }
-        }
+//        if let showImagePath = show.image?.medium {
+//            if let imageUrl = URL(string: showImagePath){
+//                DispatchQueue.global().async {
+//                    if let imageData = try? Data(contentsOf: imageUrl){
+//                        if let showPoster = UIImage(data: imageData){
+//                            self.imageCache[show.id] = showPoster
+//                            DispatchQueue.main.async {
+//                                cell.poster.image = showPoster
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
         
         // TODO: Put it on a func
-        if let showImagePath = show.image?.medium {
-
-            if let image = self.imageCache[show.id]{
-                cell.poster.image = image
-            } else{
-                if let imageUrl = URL(string: showImagePath){
-                    DispatchQueue.global().async {
-                        if let imageData = try? Data(contentsOf: imageUrl){
-                            if let showPoster = UIImage(data: imageData){
-                                self.imageCache[show.id] = showPoster
-                                DispatchQueue.main.async {
-                                    cell.poster.image = showPoster
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-        }
+//        if let showImagePath = show.image?.medium {
+//
+//            if let image = self.imageCache[show.id]{
+//                cell.poster.image = image
+//            } else{
+//                if let imageUrl = URL(string: showImagePath){
+//                    DispatchQueue.global().async {
+//                        if let imageData = try? Data(contentsOf: imageUrl){
+//                            if let showPoster = UIImage(data: imageData){
+//                                self.imageCache[show.id] = showPoster
+//                                DispatchQueue.main.async {
+//                                    cell.poster.image = showPoster
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//
+//        }
         
         
         return cell
