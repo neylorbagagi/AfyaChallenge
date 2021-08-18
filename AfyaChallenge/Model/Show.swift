@@ -13,7 +13,7 @@ class Show:Object {
     @Persisted(primaryKey: true) var id: Int
     @Persisted var name: String
     @Persisted var type: String
-    @Persisted var language: String
+    @Persisted var language: String?
     @Persisted var genres: List<String>
     @Persisted var status: String
     @Persisted var runtime: Int?
@@ -35,23 +35,23 @@ class Show:Object {
         self.init()
         self.id = object.id
         self.name = object.name
-        self.type = object.type
-        self.language = object.language
+        self.type = object.type ?? "Unknow"
+        self.language = object.language ?? "Unknow"
         self.genres = Self.arrayToList(object.genres)
-        self.status = object.status
+        self.status = object.status ?? "Unknow"
         self.runtime = object.runtime ?? 0
-        self.averageRuntime = object.averageRuntime
-        self.premiered = object.premiered
+        self.averageRuntime = object.averageRuntime ?? 0 
+        self.premiered = object.premiered ?? "Unknow"
         self.scheduleTime = object.schedule.time
         self.scheduleDays = Self.arrayToList(object.schedule.days)
         self.rating = object.rating.average ?? 0.0
-        self.weight = object.weight
+        self.weight = object.weight ?? 0
         self.network = object.network?.name ?? "Unknow"
         self.webChannel = object.webChannel?.name ?? "Unknow"
         self.images["medium"] = object.image.medium
         self.images["original"] = object.image.original
-        self.summary = object.summary
-        self.updated = object.updated
+        self.summary = object.summary ?? "Unknow"
+        self.updated = object.updated ?? 0
         self.favourite = false
         self.episodes = List<Episode>()
     }

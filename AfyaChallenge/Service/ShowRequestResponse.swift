@@ -10,23 +10,23 @@ import Foundation
 // MARK: - ShowElement
 struct ShowRequestResponse: Codable {
     let id: Int
-    let url: String
+    let url: String?
     let name: String
-    let type: String
+    let type: String?
     let language: String
     let genres: [String]
-    let status: String
+    let status: String?
     let runtime: Int?
-    let averageRuntime: Int
-    let premiered: String
+    let averageRuntime: Int?
+    let premiered: String?
     let officialSite: String?
     let schedule: ShowRequestResponseSchedule
     let rating: ShowRequestResponseRating
-    let weight: Int
+    let weight: Int?
     let network, webChannel: ShowRequestResponseNetwork?
     let image: ShowRequestResponseImage
-    let summary: String
-    let updated: Int
+    let summary: String?
+    let updated: Int?
 
     enum CodingKeys: String, CodingKey {
         case id, url, name, type, language, genres, status, runtime, averageRuntime, premiered, officialSite, schedule, rating, weight, network, webChannel, image, summary, updated

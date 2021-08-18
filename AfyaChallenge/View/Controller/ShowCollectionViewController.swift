@@ -9,24 +9,61 @@
 import UIKit
 
 
-class ShowCollectionViewController: UICollectionViewController {
-    
+class ShowCollectionViewController: UICollectionViewController, ShowCollectionViewModelDelegate {
+
     var viewModel:ShowCollectionViewModel?
+    var isListeningScrollView:Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.collectionView?.register(ShowCollectionViewCell.self, forCellWithReuseIdentifier: "showCell")
-        
+        self.collectionView?.register(ShowCollectionViewCell.self, forCellWithReuseIdentifier: "showCollectionCell")
         self.viewModel = ShowCollectionViewModel()
+        self.viewModel?.delegate = self
+        
         self.collectionView?.dataSource = self.viewModel
+        self.collectionView?.bounces = false
+        
+        self.viewModel?.requestData()
     }
 
+    
+    func didDataUpdate(_ viewModel: ShowCollectionViewModel, data: [Show], error: Error?) {
+        guard error == nil else {
+            print(error.debugDescription)
+            self.isListeningScrollView = true
+            return
+        }
+        
+        self.collectionView?.reloadData()
+        self.isListeningScrollView = true
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
+    
+}
+
+extension ShowCollectionViewController{
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        let scrollViewHeightSize:CGFloat = scrollView.frame.size.height
+        let scrollViewContentSize:CGFloat = scrollView.contentSize.height
+        let scrollViewPosition = scrollViewContentSize-scrollViewHeightSize
+        let contentOffsetY = scrollView.contentOffset.y
+        
+        if  scrollViewContentSize > 0 &&
+            self.isListeningScrollView == true &&
+            contentOffsetY > scrollViewPosition{
+            self.isListeningScrollView = false
+            print("Reached the bottom")
+            self.viewModel?.requestData()
+        }
+    }
+    
 }
 
 extension ShowCollectionViewController:UICollectionViewDelegateFlowLayout{

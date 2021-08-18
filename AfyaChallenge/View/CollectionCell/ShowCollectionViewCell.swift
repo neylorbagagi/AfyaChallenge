@@ -17,11 +17,14 @@ class ShowCollectionViewCell: UICollectionViewCell {
         
         self.poster = UIImageView(frame: contentView.frame)
         self.poster.layer.cornerRadius = 6
-
         self.poster.layer.masksToBounds = false
         self.poster.clipsToBounds = true
         
         self.addSubview(self.poster)
+    }
+    
+    override func prepareForReuse() {
+        self.poster.image = nil
     }
     
     required init?(coder aDecoder: NSCoder) {
