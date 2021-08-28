@@ -13,7 +13,7 @@ struct ShowRequestResponse: Codable {
     let url: String?
     let name: String
     let type: String?
-    let language: String
+    let language: String?
     let genres: [String]
     let status: String?
     let runtime: Int?
@@ -24,7 +24,7 @@ struct ShowRequestResponse: Codable {
     let rating: ShowRequestResponseRating
     let weight: Int?
     let network, webChannel: ShowRequestResponseNetwork?
-    let image: ShowRequestResponseImage
+    let image: ShowRequestResponseImage?
     let summary: String?
     let updated: Int?
 
@@ -34,7 +34,7 @@ struct ShowRequestResponse: Codable {
     
     // MARK: - Image
     struct ShowRequestResponseImage: Codable {
-        let medium, original: String
+        let medium, original: String?
     }
 
     // MARK: - Network

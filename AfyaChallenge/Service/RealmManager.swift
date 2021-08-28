@@ -61,6 +61,69 @@ class RealmManager {
         
     }
     
+    func getShows(byString string:String, completion: @escaping (_ data:[Show],_ error:Error?) -> Void){
+   
+        guard let realm = try? Realm() else{
+            fatalError("Could not to load Realm")
+        }
+        
+       
+        
+//        let realmShows = realm.objects(Show.self).filter("name CONTAINS '\(string)'")
+//        completion(Array(realmShows), nil)
+        
+        
+        
+        
+        
+        
+        /// Networking operation
+        /// in case of Realm instance does not have the records for request page
+        /// this process will get it from API
+        let dispatchGroup = DispatchGroup()
+        
+        dispatchGroup.enter()
+        var responseData:[ShowSearchRequestResponse] = []
+        APIClient.share.getShows(forString: string) { (data, error) in
+            guard error == nil else{
+                completion([],error)
+                return
+            }
+            responseData = data
+            dispatchGroup.leave()
+        }
+        dispatchGroup.wait()
+        
+        do {
+            let shows = try Show.showsFromAPIResponse(responseData)
+            saveShows(shows: shows)
+            completion(Array(shows),nil)
+        } catch let error {
+            completion([],error)
+        }
+        
+        //        var responseData:[ShowRequestResponse] = []
+        //        dispatchGroup.enter()
+        //        APIClient.share.getShows(forPage: page) { (data, error) in
+        //            guard error == nil else{
+        //                completion([],error)
+        //                return
+        //            }
+        //            responseData = data
+        //            dispatchGroup.leave()
+        //        }
+        //        dispatchGroup.wait()
+        //        do {
+        //            let shows = try Show.showsFromAPIResponse(responseData)
+        //            saveShows(shows: shows)
+        //            completion(Array(shows),nil)
+        //        } catch let error {
+        //            completion([],error)
+        //        }
+        
+        
+    }
+    
     func getEpisodes(byShow show:Show, completion: @escaping (_ data:[Episode], _ error:Error?) -> Void) -> Show {
         
         guard let realm = try? Realm() else{

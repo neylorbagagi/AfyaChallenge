@@ -71,4 +71,15 @@ class APIClientTests: XCTestCase {
         }
         waitForExpectations(timeout: 10, handler: nil)
     }
+    
+    func testGetShowsFromString(){
+        /// TODO: to test the quantity minimum 1 until 250
+        let requestExpectation = expectation(description: "request")
+        APIClient.share.getShows(forString: "rick and morty") { (data, error) in
+            XCTAssertNil(error)
+            XCTAssert(data.count > 0, "must to have data")
+            requestExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 10, handler: nil)
+    }
 }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F006349D26CDB5DB001771EE /* ShowCollectionSearchViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006349C26CDB5DB001771EE /* ShowCollectionSearchViewCell.swift */; };
+		F00634A126D03C3B001771EE /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00634A026D03C3B001771EE /* MainNavigationController.swift */; };
+		F00634A526D4159D001771EE /* ShowSearchRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00634A426D4159C001771EE /* ShowSearchRequestResponse.swift */; };
 		F0211DDA265981EE0037F170 /* ShowCollectionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0211DD9265981EE0037F170 /* ShowCollectionViewData.swift */; };
 		F0211DDC2659DF7B0037F170 /* ShowCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0211DDB2659DF7B0037F170 /* ShowCollectionViewLayout.swift */; };
 		F0211DDE2659E6A30037F170 /* ShowCollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0211DDD2659E6A30037F170 /* ShowCollectionViewDelegate.swift */; };
@@ -59,6 +62,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F006349C26CDB5DB001771EE /* ShowCollectionSearchViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCollectionSearchViewCell.swift; sourceTree = "<group>"; };
+		F00634A026D03C3B001771EE /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
+		F00634A426D4159C001771EE /* ShowSearchRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSearchRequestResponse.swift; sourceTree = "<group>"; };
 		F0211DD9265981EE0037F170 /* ShowCollectionViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCollectionViewData.swift; sourceTree = "<group>"; };
 		F0211DDB2659DF7B0037F170 /* ShowCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCollectionViewLayout.swift; sourceTree = "<group>"; };
 		F0211DDD2659E6A30037F170 /* ShowCollectionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCollectionViewDelegate.swift; sourceTree = "<group>"; };
@@ -136,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				F0519A42269494890060E476 /* ShowCollectionViewCell.swift */,
+				F006349C26CDB5DB001771EE /* ShowCollectionSearchViewCell.swift */,
 			);
 			path = CollectionCell;
 			sourceTree = "<group>";
@@ -239,6 +246,7 @@
 				F08FE943264B51FA00D01F4E /* ShowCollectionViewController.swift */,
 				F08FE948264B743700D01F4E /* ShowDetailViewController.swift */,
 				F08FE94A264C19E400D01F4E /* EpisodeDetailViewController.swift */,
+				F00634A026D03C3B001771EE /* MainNavigationController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -273,6 +281,7 @@
 				F05B570E26C9C7FD003F9B72 /* EpisodeRequestResponse.swift */,
 				F05B570F26C9C7FD003F9B72 /* ImageRequestResponse.swift */,
 				F05B571026C9C7FD003F9B72 /* ShowRequestResponse.swift */,
+				F00634A426D4159C001771EE /* ShowSearchRequestResponse.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -431,13 +440,16 @@
 				F0AA6DA826600E54006BFAE8 /* ShowTableViewCellCollectionData.swift in Sources */,
 				F08FE949264B743700D01F4E /* ShowDetailViewController.swift in Sources */,
 				F0211DDC2659DF7B0037F170 /* ShowCollectionViewLayout.swift in Sources */,
+				F006349D26CDB5DB001771EE /* ShowCollectionSearchViewCell.swift in Sources */,
 				F02537C926B5A36C00187FCE /* RealmManager.swift in Sources */,
 				F08FE94B264C19E400D01F4E /* EpisodeDetailViewController.swift in Sources */,
 				F08FE944264B51FA00D01F4E /* ShowCollectionViewController.swift in Sources */,
+				F00634A126D03C3B001771EE /* MainNavigationController.swift in Sources */,
 				F0211DDE2659E6A30037F170 /* ShowCollectionViewDelegate.swift in Sources */,
 				F05B571126C9C7FD003F9B72 /* EpisodeRequestResponse.swift in Sources */,
 				F054C9C82649C86300760E66 /* AppDelegate.swift in Sources */,
 				F02537CD26B5C72000187FCE /* ShowCollectionViewModel.swift in Sources */,
+				F00634A526D4159D001771EE /* ShowSearchRequestResponse.swift in Sources */,
 				F054C9E82649C88100760E66 /* APIClient.swift in Sources */,
 				F0AA6DA6265EDB69006BFAE8 /* ShowTableViewCellCollectionLayout.swift in Sources */,
 				F0AA6DA2265ECA4A006BFAE8 /* HomeTableViewDelegate.swift in Sources */,

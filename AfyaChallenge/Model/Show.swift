@@ -48,8 +48,8 @@ class Show:Object {
         self.weight = object.weight ?? 0
         self.network = object.network?.name ?? "Unknow"
         self.webChannel = object.webChannel?.name ?? "Unknow"
-        self.images["medium"] = object.image.medium
-        self.images["original"] = object.image.original
+        self.images["medium"] = object.image?.medium ?? ""
+        self.images["original"] = object.image?.original ?? ""
         self.summary = object.summary ?? "Unknow"
         self.updated = object.updated ?? 0
         self.favourite = false
@@ -68,6 +68,14 @@ class Show:Object {
         let response:List<Show> = List<Show>()
         for item in objects {
             response.append(try Show(item))
+        }
+        return response
+    }
+    
+    static func showsFromAPIResponse(_ objects:[ShowSearchRequestResponse]) throws -> List<Show> {
+        let response:List<Show> = List<Show>()
+        for item in objects {
+            response.append(try Show(item.show))
         }
         return response
     }

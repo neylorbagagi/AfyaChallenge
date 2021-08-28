@@ -30,6 +30,18 @@ class RealmManagerTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
+    func testGetShowsFromSearch() {
+        
+        let requestExpectation = expectation(description: "request")
+        RealmManager.share.getShows(byString: "rick") { (data, error) in
+            XCTAssertNil(error)
+            XCTAssert(data.count > 0, "must to have data")
+            print(data)
+            requestExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
     func testGetEpisodes(){
         
         let realm = try! Realm()

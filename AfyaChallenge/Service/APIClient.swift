@@ -71,6 +71,29 @@ class APIClient {
         }
     }
     
+    /// Returns the id ofr shows 
+    /// - Parameters:
+    ///     - string: String
+    /// - Returns:
+    ///     - data: [Int], I was using optional but, it's easier to return empty array for now
+    ///     - error: Error?
+    func getShows(forString string:String, completion: @escaping (_ data:[ShowSearchRequestResponse],_ error:Error?) -> Void) {
+        
+        let url = "https://api.tvmaze.com/search/shows?q=\(string)"
+        guard let urlRequest = URL(string: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else{
+            completion([],APIClientError.invalidURL(reason: "Invalid URL: \(url)"))
+            return
+        }
+        
+        self.apiRequest(url: urlRequest, type:[ShowSearchRequestResponse].self) { (data, response, error) in
+            guard let data = data, error == nil else {
+                completion([],error)
+                return
+            }
+            completion(data,nil)
+        }
+    }
+    
     /// Returns a show decode to ShowResponseRequest model
     /// - Parameters:
     ///     - id: Int

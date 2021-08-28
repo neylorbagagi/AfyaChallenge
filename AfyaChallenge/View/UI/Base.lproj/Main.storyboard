@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="h5V-n4-GZY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tsz-tc-9At">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -33,6 +33,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EcH-XP-LFw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-905" y="122"/>
+        </scene>
+        <!--Main Navigation Controller-->
+        <scene sceneID="vCt-IU-mAR">
+            <objects>
+                <navigationController id="tsz-tc-9At" customClass="MainNavigationController" customModule="AfyaChallenge" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="P3e-a3-MeM">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="h5V-n4-GZY" kind="relationship" relationship="rootViewController" id="7ya-Jr-AFQ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="B7O-mw-syW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-906" y="838"/>
         </scene>
         <!--Show Collection View Controller-->
         <scene sceneID="gAv-Rq-wT0">
@@ -87,7 +103,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WSP-vl-IqT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-79" y="820"/>
+            <point key="canvasLocation" x="708" y="838"/>
         </scene>
         <!--Home Table View Controller-->
         <scene sceneID="rqX-OB-FEs">
