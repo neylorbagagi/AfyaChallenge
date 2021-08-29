@@ -17,25 +17,10 @@ class RealmManager {
         guard let realm = try? Realm() else{
             fatalError("Could not to load Realm")
         }
-        
-        
-        /// Realm operation
-        /// If this processo is succeful return to main task
-        let dispatchGroup = DispatchGroup()
-        let maxItems = 250
-        let minId = (page*maxItems) + 1
-        let maxId = (page+1) * maxItems
-        
-        let realmShows = realm.objects(Show.self).filter("id >= \(minId) AND id <= \(maxId)")
-        if realmShows.count > 0{
-            completion(Array(realmShows), nil)
-            return
-        }
-        
-        
         /// Networking operation
         /// in case of Realm instance does not have the records for request page
         /// this process will get it from API
+        let dispatchGroup = DispatchGroup()
         var responseData:[ShowRequestResponse] = []
         dispatchGroup.enter()
         APIClient.share.getShows(forPage: page) { (data, error) in
@@ -48,8 +33,6 @@ class RealmManager {
         }
         dispatchGroup.wait()
         
-        
-        
         do {
             let shows = try Show.showsFromAPIResponse(responseData)
             saveShows(shows: shows)
@@ -57,8 +40,6 @@ class RealmManager {
         } catch let error {
             completion([],error)
         }
-        
-        
     }
     
     func getShows(byString string:String, completion: @escaping (_ data:[Show],_ error:Error?) -> Void){

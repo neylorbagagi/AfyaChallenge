@@ -11,7 +11,7 @@ import UIKit
 import RealmSwift
 
 protocol ShowCollectionViewModelDelegate {
-    func didDataUpdate(_ viewModel:ShowCollectionViewModel, data:[Show],_ collectionMode:ShowCollectionMode,_ error:Error?)
+    func didDataUpdate(_ viewModel:ShowCollectionViewModel, _ collectionMode:ShowCollectionMode,_ error:Error?)
 }
 
 public enum ShowCollectionMode {
@@ -21,72 +21,96 @@ public enum ShowCollectionMode {
 
 class ShowCollectionViewModel: NSObject {
     
+    var notificationToken:NotificationToken?
+    var realm = try? Realm()
+    
     private var data:[Show] = []
-    private var filteredData:[Show] = []
+    private var filterString:String = ""
+    private var dataFiltered:[Show] {
+        self.data.filter( {$0.name.localizedStandardContains(self.filterString) })
+    }
+    
     private let imagesCache = NSCache<NSNumber,UIImage>()
-    private var currentePage:Int = 0
     var delegate:ShowCollectionViewModelDelegate?
     var collectionMode:ShowCollectionMode = .page
     
-    // T E S T  T E S T  T E S T  T E S T  T E S T  T E S T
-    //    var notificationToken:NotificationToken?
-    //    var realm = try! Realm()
-    //
-    //    override init() {
-    //        let showCollection = self.realm.objects(Show.self)
-    //        self.notificationToken = showCollection.observe { change in
-    //            switch change {
-    //                case .initial:
-    //                    //self.collectionView?.reloadData()
-    //                    print(".initial")
-    //                case .error(let error):
-    //                    fatalError("\(error)")
-    //                case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
-    //                    print(".update")
-    //                }
-    //        }
-    //    }
-    // T E S T  T E S T  T E S T  T E S T  T E S T  T E S T
-    
-    func requestData(_ string:String = "") {
+    override init() {
+        super.init()
         
+        guard let realm = self.realm else {
+            print("No Realm instance")
+            return
+        }
+        
+        let data = realm.objects(Show.self)
+        self.notificationToken = data.observe { change in
+            switch change {
+                case .initial:
+                    print(".initial")
+                    self.data = Array(data)
+                    
+                    if data.count == 0 {
+                        self.requestData()
+                    } else {
+                        self.notifyView()
+                    }
+            
+                case .error(let error):
+                    self.notifyView(error)
+                    
+                case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+                    print(".update")
+                    self.data = Array(data)
+                    self.notifyView()
+                }
+        }
+    }
+
+    
+    func notifyView(_ error:Error? = nil) {
         guard let delegate = self.delegate else{
             print("No delegate:ShowCollectionViewModelDelegate set")
             return
         }
-        
-        switch self.collectionMode {
-        case .search:
-            
-            //self.filteredData = Array(self.realm.objects(Show.self).filter("name CONTAINS '\(string)'"))
-//            delegate.didDataUpdate(self, data:data, self.collectionMode, nil)
-            
-            
-            RealmManager.share.getShows(byString: string) { (data, error) in
-                guard error == nil else{
-                    delegate.didDataUpdate(self, data:[], self.collectionMode, error)
-                    return
-                }
-                self.filteredData.append(contentsOf: data)// = data
-                delegate.didDataUpdate(self, data:data, self.collectionMode, nil)
-            }
-            
-        default:
-            RealmManager.share.getShows(byPage: currentePage) { (data, error) in
-                guard error == nil else{
-                    delegate.didDataUpdate(self, data:[], self.collectionMode, error)
-                    return
-                }
-                self.data.append(contentsOf: data)
-                self.currentePage += 1
-                delegate.didDataUpdate(self, data: data, self.collectionMode, nil)
-            }
-        }
+        delegate.didDataUpdate(self, self.collectionMode, error)
     }
 
+    
+    func requestData(_ string:String = "") {
+        switch self.collectionMode {
+            case .search:
+                self.filterString = string
+                self.notifyView()
+                
+                RealmManager.share.getShows(byString: string) { (data, error) in
+                    guard error == nil else{
+                        self.notifyView(error)
+                        return
+                    }
+                }
+            default:
+                var currentePage = 0
+                if UserDefaults.standard.object(forKey: "currentePage") != nil {
+                    currentePage = UserDefaults.standard.integer(forKey: "currentePage")
+                }
+                
+                RealmManager.share.getShows(byPage: currentePage) { (data, error) in
+                    guard error == nil else{
+                        self.notifyView(error)
+                        return
+                    }
+                    currentePage += 1
+                    UserDefaults.standard.setValue(currentePage, forKey: "currentePage")
+                }
+        }
+    }
+    
+
     func switchCollectionMode(to mode:ShowCollectionMode){
-        self.filteredData = []
         self.collectionMode = mode
+        if mode == .page {
+            self.filterString = ""
+        }
     }
     
     private func loadImage(from url:String,completion: @escaping (UIImage?) -> ()) {
@@ -96,8 +120,6 @@ class ShowCollectionViewModel: NSObject {
         }
         
         DispatchQueue.global().async {
-            //let url = URL(string: url)!
-            
             guard let data = try? Data(contentsOf: url) else { return }
             let image = UIImage(data: data)
             
@@ -105,8 +127,6 @@ class ShowCollectionViewModel: NSObject {
                 completion(image)
             }
         }
-        
-        
     }
     
     
@@ -117,7 +137,14 @@ extension ShowCollectionViewModel: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch self.collectionMode {
         case .search:
-            return self.filteredData.count
+            print("------------------------")
+            //print(self.data.filter( {$0.name.localizedStandardContains(self.filterString)} ).count)
+            print(self.dataFiltered.count)
+            for show in self.dataFiltered{
+                print("id: \(show.id) name: \(show.name)")
+            }
+            print("------------------------")
+            return self.dataFiltered.count
         default:
             return self.data.count
         }
@@ -129,11 +156,12 @@ extension ShowCollectionViewModel: UICollectionViewDataSource {
         let show:Show
         switch self.collectionMode {
             case .search:
-                show = self.filteredData[indexPath.item]
+                show = self.dataFiltered[indexPath.item]
             default:
                 show = self.data[indexPath.item]
         }
         
+        cell.title.text = show.name
         let itemNumber = NSNumber(value: show.id)
         if let cachedImage = self.imagesCache.object(forKey: itemNumber) {
             cell.poster.image = cachedImage
@@ -148,17 +176,4 @@ extension ShowCollectionViewModel: UICollectionViewDataSource {
         return cell
     }
     
-    
-    
 }
-
-
-//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        if (kind == UICollectionElementKindSectionHeader){
-//            let searchHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "searchCollectionHeader", for: indexPath)
-//            return searchHeader
-//        }
-//
-//        return UICollectionReusableView()
-//    }
-//

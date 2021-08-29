@@ -23,9 +23,6 @@ class ShowCollectionViewController: UICollectionViewController, ShowCollectionVi
         
         self.collectionView?.dataSource = self.viewModel
         self.collectionView?.bounces = false
-        
-        self.viewModel?.requestData()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,16 +50,20 @@ class ShowCollectionViewController: UICollectionViewController, ShowCollectionVi
                             withReuseIdentifier: "searchCollectionHeader")
     }
 
-    func didDataUpdate(_ viewModel: ShowCollectionViewModel, data:[Show], _ collectionMode:ShowCollectionMode, _ error: Error?) {
+    func didDataUpdate(_ viewModel: ShowCollectionViewModel, _ collectionMode:ShowCollectionMode, _ error: Error?) {
+        switch collectionMode {
+        case .search:
+            self.isListeningScrollView = false
+        default:
+            self.isListeningScrollView = true
+        }
         
         guard error == nil else {
             print(error.debugDescription)
-            self.isListeningScrollView = true
             return
         }
         
         self.collectionView?.reloadData()
-        self.isListeningScrollView = true
     }
       
 }
@@ -94,6 +95,7 @@ extension ShowCollectionViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.isListeningScrollView = false
         self.viewModel?.requestData(searchText)
     }
     

@@ -91,6 +91,17 @@ class RealmManagerTests: XCTestCase {
         
     }
     
-
-
+    func testCleanShows() {
+        
+        guard let realm = try? Realm() else{
+            fatalError("Cold not to load Realm")
+        }
+        
+        try! realm.write {
+            realm.deleteAll()
+        }
+        
+        
+    }
+    
 }

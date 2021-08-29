@@ -11,6 +11,7 @@ import UIKit
 class ShowCollectionViewCell: UICollectionViewCell {
     
     var poster:UIImageView!
+    var title:UILabel!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -20,7 +21,15 @@ class ShowCollectionViewCell: UICollectionViewCell {
         self.poster.layer.masksToBounds = false
         self.poster.clipsToBounds = true
         
+        self.title = UILabel(frame: contentView.frame)
+        self.title.numberOfLines = 0
+        self.title.lineBreakMode = .byWordWrapping
+        self.title.textAlignment = .center
+        self.title.tintColor = #colorLiteral(red: 0.2156862745, green: 0.2274509804, blue: 0.2352941176, alpha: 1)
+        
+        self.addSubview(self.title)
         self.addSubview(self.poster)
+
     }
     
     override func prepareForReuse() {
