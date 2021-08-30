@@ -21,8 +21,8 @@ public enum ShowCollectionMode {
 
 class ShowCollectionViewModel: NSObject {
     
-    var notificationToken:NotificationToken?
-    var realm = try? Realm()
+    private var notificationToken:NotificationToken?
+    private var realm = try? Realm()
     
     private var data:[Show] = []
     private var filterString:String = ""
@@ -65,7 +65,6 @@ class ShowCollectionViewModel: NSObject {
                 }
         }
     }
-
     
     func notifyView(_ error:Error? = nil) {
         guard let delegate = self.delegate else{
@@ -74,7 +73,6 @@ class ShowCollectionViewModel: NSObject {
         }
         delegate.didDataUpdate(self, self.collectionMode, error)
     }
-
     
     func requestData(_ string:String = "") {
         switch self.collectionMode {
@@ -104,7 +102,6 @@ class ShowCollectionViewModel: NSObject {
                 }
         }
     }
-    
 
     func switchCollectionMode(to mode:ShowCollectionMode){
         self.collectionMode = mode
@@ -113,23 +110,6 @@ class ShowCollectionViewModel: NSObject {
         }
     }
     
-    private func loadImage(from url:String,completion: @escaping (UIImage?) -> ()) {
-        guard let url = URL(string: url) else{
-            print("Invalid image url")
-            return
-        }
-        
-        DispatchQueue.global().async {
-            guard let data = try? Data(contentsOf: url) else { return }
-            let image = UIImage(data: data)
-            
-            DispatchQueue.main.async {
-                completion(image)
-            }
-        }
-    }
-    
-    
 }
 
 extension ShowCollectionViewModel: UICollectionViewDataSource {
@@ -137,13 +117,6 @@ extension ShowCollectionViewModel: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch self.collectionMode {
         case .search:
-            print("------------------------")
-            //print(self.data.filter( {$0.name.localizedStandardContains(self.filterString)} ).count)
-            print(self.dataFiltered.count)
-            for show in self.dataFiltered{
-                print("id: \(show.id) name: \(show.name)")
-            }
-            print("------------------------")
             return self.dataFiltered.count
         default:
             return self.data.count
@@ -161,16 +134,12 @@ extension ShowCollectionViewModel: UICollectionViewDataSource {
                 show = self.data[indexPath.item]
         }
         
-        cell.title.text = show.name
         let itemNumber = NSNumber(value: show.id)
-        if let cachedImage = self.imagesCache.object(forKey: itemNumber) {
-            cell.poster.image = cachedImage
-        } else {
-            self.loadImage(from:show.images["medium"]!) {(image) in
-                guard let image = image else { return }
-                cell.poster.image = image
-                self.imagesCache.setObject(image, forKey: itemNumber)
-            }
+        let cachedImage:UIImage? = self.imagesCache.object(forKey: itemNumber)
+       
+        cell.set(show: show, image: cachedImage) { (id, image) in
+            guard let image = image else { return }
+            self.imagesCache.setObject(image, forKey: NSNumber(value:id))
         }
 
         return cell

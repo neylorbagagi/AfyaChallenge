@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F006349D26CDB5DB001771EE /* ShowCollectionSearchViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006349C26CDB5DB001771EE /* ShowCollectionSearchViewCell.swift */; };
 		F00634A126D03C3B001771EE /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00634A026D03C3B001771EE /* MainNavigationController.swift */; };
 		F00634A526D4159D001771EE /* ShowSearchRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00634A426D4159C001771EE /* ShowSearchRequestResponse.swift */; };
 		F0211DDA265981EE0037F170 /* ShowCollectionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0211DD9265981EE0037F170 /* ShowCollectionViewData.swift */; };
@@ -36,6 +35,7 @@
 		F05B571D26C9C891003F9B72 /* EpisodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05B571926C9C890003F9B72 /* EpisodeTests.swift */; };
 		F05B571E26C9C891003F9B72 /* ShowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05B571A26C9C890003F9B72 /* ShowTests.swift */; };
 		F05B571F26C9C891003F9B72 /* RealmManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05B571B26C9C891003F9B72 /* RealmManagerTests.swift */; };
+		F06D0E0426DC1C27002968E7 /* ShowCollectionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06D0E0326DC1C27002968E7 /* ShowCollectionCellViewModel.swift */; };
 		F08FE944264B51FA00D01F4E /* ShowCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08FE943264B51FA00D01F4E /* ShowCollectionViewController.swift */; };
 		F08FE949264B743700D01F4E /* ShowDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08FE948264B743700D01F4E /* ShowDetailViewController.swift */; };
 		F08FE94B264C19E400D01F4E /* EpisodeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08FE94A264C19E400D01F4E /* EpisodeDetailViewController.swift */; };
@@ -62,7 +62,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F006349C26CDB5DB001771EE /* ShowCollectionSearchViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCollectionSearchViewCell.swift; sourceTree = "<group>"; };
 		F00634A026D03C3B001771EE /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
 		F00634A426D4159C001771EE /* ShowSearchRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSearchRequestResponse.swift; sourceTree = "<group>"; };
 		F0211DD9265981EE0037F170 /* ShowCollectionViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCollectionViewData.swift; sourceTree = "<group>"; };
@@ -95,6 +94,7 @@
 		F05B571926C9C890003F9B72 /* EpisodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeTests.swift; sourceTree = "<group>"; };
 		F05B571A26C9C890003F9B72 /* ShowTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowTests.swift; sourceTree = "<group>"; };
 		F05B571B26C9C891003F9B72 /* RealmManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManagerTests.swift; sourceTree = "<group>"; };
+		F06D0E0326DC1C27002968E7 /* ShowCollectionCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCollectionCellViewModel.swift; sourceTree = "<group>"; };
 		F08FE943264B51FA00D01F4E /* ShowCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCollectionViewController.swift; sourceTree = "<group>"; };
 		F08FE948264B743700D01F4E /* ShowDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDetailViewController.swift; sourceTree = "<group>"; };
 		F08FE94A264C19E400D01F4E /* EpisodeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeDetailViewController.swift; sourceTree = "<group>"; };
@@ -142,7 +142,6 @@
 			isa = PBXGroup;
 			children = (
 				F0519A42269494890060E476 /* ShowCollectionViewCell.swift */,
-				F006349C26CDB5DB001771EE /* ShowCollectionSearchViewCell.swift */,
 			);
 			path = CollectionCell;
 			sourceTree = "<group>";
@@ -170,6 +169,7 @@
 				F042E0F4265AF85500405559 /* HomeTableViewModel.swift */,
 				F02537CC26B5C72000187FCE /* ShowCollectionViewModel.swift */,
 				F0519A4C2695EE320060E476 /* HighlightViewModel.swift */,
+				F06D0E0326DC1C27002968E7 /* ShowCollectionCellViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -431,6 +431,7 @@
 				F0211DDA265981EE0037F170 /* ShowCollectionViewData.swift in Sources */,
 				F0519A4D2695EE320060E476 /* HighlightViewModel.swift in Sources */,
 				F0AA6DA4265ED017006BFAE8 /* ShowTableViewCellCollectionDelegate.swift in Sources */,
+				F06D0E0426DC1C27002968E7 /* ShowCollectionCellViewModel.swift in Sources */,
 				F05B571326C9C7FD003F9B72 /* ShowRequestResponse.swift in Sources */,
 				F0519A412693E9DC0060E476 /* HomeTableViewController.swift in Sources */,
 				F02537D626B5D7C500187FCE /* Show.swift in Sources */,
@@ -440,7 +441,6 @@
 				F0AA6DA826600E54006BFAE8 /* ShowTableViewCellCollectionData.swift in Sources */,
 				F08FE949264B743700D01F4E /* ShowDetailViewController.swift in Sources */,
 				F0211DDC2659DF7B0037F170 /* ShowCollectionViewLayout.swift in Sources */,
-				F006349D26CDB5DB001771EE /* ShowCollectionSearchViewCell.swift in Sources */,
 				F02537C926B5A36C00187FCE /* RealmManager.swift in Sources */,
 				F08FE94B264C19E400D01F4E /* EpisodeDetailViewController.swift in Sources */,
 				F08FE944264B51FA00D01F4E /* ShowCollectionViewController.swift in Sources */,

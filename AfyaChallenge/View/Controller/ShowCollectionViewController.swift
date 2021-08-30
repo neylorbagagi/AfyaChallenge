@@ -46,8 +46,7 @@ class ShowCollectionViewController: UICollectionViewController, ShowCollectionVi
     
     func registerCollectionCells(collection:UICollectionView){
         collection.register(ShowCollectionViewCell.self, forCellWithReuseIdentifier: "showCollectionCell")
-        collection.register(SearchCollectionHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
-                            withReuseIdentifier: "searchCollectionHeader")
+        
     }
 
     func didDataUpdate(_ viewModel: ShowCollectionViewModel, _ collectionMode:ShowCollectionMode, _ error: Error?) {

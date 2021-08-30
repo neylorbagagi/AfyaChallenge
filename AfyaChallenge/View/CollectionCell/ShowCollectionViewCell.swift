@@ -8,6 +8,8 @@
 
 import UIKit
 
+///TODO: add to ViewModel
+
 class ShowCollectionViewCell: UICollectionViewCell {
     
     var poster:UIImageView!
@@ -20,6 +22,8 @@ class ShowCollectionViewCell: UICollectionViewCell {
         self.poster.layer.cornerRadius = 6
         self.poster.layer.masksToBounds = false
         self.poster.clipsToBounds = true
+        self.poster.layer.borderWidth = 1.0
+        self.poster.layer.borderColor = #colorLiteral(red: 0.9210698009, green: 0.933000505, blue: 0.9054066539, alpha: 1)
         
         self.title = UILabel(frame: contentView.frame)
         self.title.numberOfLines = 0
@@ -38,6 +42,34 @@ class ShowCollectionViewCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func set(show:Show, image:UIImage? = nil, completion: @escaping (_ showId:Int, _ image:UIImage?) -> Void) {
+        self.title.text = show.name
+        
+        if let image = image {
+            self.poster.image = image
+            completion(show.id,nil)
+        } else {
+            guard let url = URL(string: show.images["medium"] ?? "") else{
+                print("Invalid image url")
+                self.poster.image = UIImage()
+                completion(show.id,nil)
+                return
+            }
+            self.loadImage(from: url) { (image) in
+                DispatchQueue.main.async {
+                    self.poster.image = image
+                    completion(show.id,image)
+                }
+            }
+        }
+    }
+    
+    private func loadImage(from url:URL,completion: @escaping (UIImage?) -> ()) {
+        guard let data = try? Data(contentsOf: url) else { return }
+        let image = UIImage(data: data)
+        completion(image)
     }
     
 }
