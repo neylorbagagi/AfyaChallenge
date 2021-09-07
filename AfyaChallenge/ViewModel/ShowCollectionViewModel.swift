@@ -110,6 +110,9 @@ class ShowCollectionViewModel: NSObject {
         }
     }
     
+    func selectedShowForSegue(_ indexPath:IndexPath) -> Show {
+        return self.data[indexPath.row]
+    }
 }
 
 extension ShowCollectionViewModel: UICollectionViewDataSource {

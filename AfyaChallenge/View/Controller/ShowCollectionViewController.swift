@@ -12,6 +12,7 @@ class ShowCollectionViewController: UICollectionViewController, ShowCollectionVi
 
     var viewModel:ShowCollectionViewModel?
     var isListeningScrollView:Bool = false
+    //var showDetailView:ShowDetailViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,27 @@ class ShowCollectionViewController: UICollectionViewController, ShowCollectionVi
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "segueShowDetail"{
+            
+            guard let indexPath:IndexPath = self.collectionView?.indexPathsForSelectedItems?.first else {
+                print("Invalid Index")
+                return
+            }
+            
+            if let detailView = segue.destination as? ShowDetailViewController {
+                
+                let show:Show = self.viewModel!.selectedShowForSegue(indexPath)
+                let detailViewModel = ShowDetailViewModel(data: show)
+                
+                detailView.viewModel = detailViewModel
+            }
+            
+        }
+        
     }
     
     func registerForSearchDelegate(){
@@ -64,6 +86,7 @@ class ShowCollectionViewController: UICollectionViewController, ShowCollectionVi
         
         self.collectionView?.reloadData()
     }
+    
       
 }
 
@@ -83,7 +106,12 @@ extension ShowCollectionViewController{
         }
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "segueShowDetail", sender: nil)
+    }
+    
 }
+
 
 extension ShowCollectionViewController: UISearchBarDelegate {
     

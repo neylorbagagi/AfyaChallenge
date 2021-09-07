@@ -10,7 +10,8 @@ import UIKit
 
 class ShowDetailViewController: UIViewController {
 
-    var show:Show?
+    var viewModel:ShowDetailViewModel?
+    
     @IBOutlet weak var poster: UIImageView!
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var schedule: UILabel!
@@ -22,17 +23,26 @@ class ShowDetailViewController: UIViewController {
     private let reuseIdentifier = "EpisodeCellIdentifier"
     var episodesDataCache:[Episode] = []
     
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.episodesTable.delegate = self
-        self.episodesTable.dataSource = self
+//        self.episodesTable.delegate = self
+        self.tableView.dataSource = self
+        self.tableView?.register(UITableViewCell.self, forCellReuseIdentifier: self.reuseIdentifier)
         
+        //self.tableView.register(String.self, forCellReuseIdentifier: self.reuseIdentifier)  //ollection.register(ShowCollectionViewCell.self, forCellWithReuseIdentifier: "showCollectionCell")
         // Do any additional setup after loading the view.
-        if let show = self.show{
-            self.requestData(show: show.id)
-            configureView(withShow:show)
-        }
+//        if let show = self.show{
+//            self.requestData(show: show.id)
+//            configureView(withShow:show)
+//        }
+        
+        self.tableViewHeight.constant = CGFloat(10 * 43.5)
     }
 
     override func didReceiveMemoryWarning() {
@@ -101,11 +111,12 @@ class ShowDetailViewController: UIViewController {
 
 extension ShowDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        0
+        10
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier, for: indexPath)
+        cell.textLabel?.text = "Gabriela"
         return cell
     }
     
