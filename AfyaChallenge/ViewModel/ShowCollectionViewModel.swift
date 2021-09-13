@@ -21,7 +21,7 @@ public enum ShowCollectionMode {
 
 class ShowCollectionViewModel: NSObject {
     
-    private var notificationToken:NotificationToken?
+    public var notificationToken:NotificationToken? { didSet {print("Collection Notification updated")}}
     private var realm = try? Realm()
     
     private var data:[Show] = []
@@ -36,34 +36,7 @@ class ShowCollectionViewModel: NSObject {
     
     override init() {
         super.init()
-        
-        guard let realm = self.realm else {
-            print("No Realm instance")
-            return
-        }
-        
-        let data = realm.objects(Show.self)
-        self.notificationToken = data.observe { change in
-            switch change {
-                case .initial:
-                    print(".initial")
-                    self.data = Array(data)
-                    
-                    if data.count == 0 {
-                        self.requestData()
-                    } else {
-                        self.notifyView()
-                    }
-            
-                case .error(let error):
-                    self.notifyView(error)
-                    
-                case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
-                    print(".update")
-                    self.data = Array(data)
-                    self.notifyView()
-                }
-        }
+        self.startRealmNotification()
     }
     
     func notifyView(_ error:Error? = nil) {
@@ -103,6 +76,41 @@ class ShowCollectionViewModel: NSObject {
         }
     }
 
+    func stopRealmNotification(){
+        self.notificationToken?.invalidate()
+        self.notificationToken = nil
+    }
+    
+    func startRealmNotification(){
+        guard let realm = self.realm else {
+            print("No Realm instance")
+            return
+        }
+        
+        let data = realm.objects(Show.self)
+        self.notificationToken = data.observe { change in
+            switch change {
+                case .initial:
+                    print(".initial")
+                    self.data = Array(data)
+                    
+                    if data.count == 0 {
+                        self.requestData()
+                    } else {
+                        self.notifyView()
+                    }
+            
+                case .error(let error):
+                    self.notifyView(error)
+                    
+                case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+                    print(".update")
+                    self.data = Array(data)
+                    self.notifyView()
+            }
+        }
+    }
+    
     func switchCollectionMode(to mode:ShowCollectionMode){
         self.collectionMode = mode
         if mode == .page {
@@ -147,5 +155,6 @@ extension ShowCollectionViewModel: UICollectionViewDataSource {
 
         return cell
     }
+    
     
 }

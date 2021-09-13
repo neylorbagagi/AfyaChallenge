@@ -57,19 +57,13 @@ class ShowCollectionViewCell: UICollectionViewCell {
                 completion(show.id,nil)
                 return
             }
-            self.loadImage(from: url) { (image) in
+            loadImage(from: url) { (image) in
                 DispatchQueue.main.async {
                     self.poster.image = image
                     completion(show.id,image)
                 }
             }
         }
-    }
-    
-    private func loadImage(from url:URL,completion: @escaping (UIImage?) -> ()) {
-        guard let data = try? Data(contentsOf: url) else { return }
-        let image = UIImage(data: data)
-        completion(image)
     }
     
 }

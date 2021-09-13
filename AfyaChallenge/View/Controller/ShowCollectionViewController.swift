@@ -30,6 +30,16 @@ class ShowCollectionViewController: UICollectionViewController, ShowCollectionVi
         self.registerForSearchDelegate()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        if self.viewModel?.notificationToken == nil{
+            self.viewModel?.startRealmNotification()
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.viewModel?.stopRealmNotification()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

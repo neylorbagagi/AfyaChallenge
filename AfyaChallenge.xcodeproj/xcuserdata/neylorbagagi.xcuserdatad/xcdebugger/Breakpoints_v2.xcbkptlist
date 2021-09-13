@@ -7,48 +7,64 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "02B323F7-D095-4D72-B03B-9166AFD5CC6F"
+            uuid = "40538594-47D6-4FE0-8B3A-1B34B4654AF8"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "AfyaChallenge/View/CollectionCell/ShowCollectionViewCell.swift"
+            filePath = "AfyaChallenge/View/ShowDetailView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "set(show:image:completion:)"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
+            landmarkName = "changeButtonState()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "DEDC65D5-3DA4-43DF-9AED-AB3693E5A6BC"
+            uuid = "68EE6E72-4DE6-4426-B898-99D0C77B1F4B"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "AfyaChallenge/View/Controller/MainNavigationController.swift"
+            filePath = "AfyaChallenge/ViewModel/ShowDetailViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
-            landmarkName = "prepare(for:sender:)"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "updateFavorite()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "7519601C-81B8-4561-9BBC-8EC2378429DD"
+            uuid = "95FFB916-B1C5-4EC2-8061-F8EF2D3279F8"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "AfyaChallenge/View/Controller/MainNavigationController.swift"
+            filePath = "AfyaChallenge/View/ShowDetailView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "prepare(for:sender:)"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
+            landmarkName = "configureFavouriteButton(dataSource:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0AC77EA0-510D-4370-AB30-07981F68ED17"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AfyaChallenge/View/ShowDetailView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
+            landmarkName = "configureFavouriteButton(dataSource:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

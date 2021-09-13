@@ -125,7 +125,7 @@ class APIClient {
     ///     - error: Error?
     func getShowEpisodes(forShow id:Int, completion: @escaping (_ data:[EpisodeRequestResponse],_ error:Error?) -> Void) {
         
-        let url = "https://api.tvmaze.com/seasons/\(id)/episodes"
+        let url = "https://api.tvmaze.com/shows/\(id)/episodes"
         guard let urlRequest = URL(string: url) else{
             completion([],APIClientError.invalidURL(reason: "Invalid URL: \(url)"))
             return

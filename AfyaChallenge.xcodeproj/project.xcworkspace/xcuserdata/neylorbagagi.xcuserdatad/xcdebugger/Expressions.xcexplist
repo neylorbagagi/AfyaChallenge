@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "__pthread_kill:(null)">
+      </ContextState>
+      <ContextState
+         contextName = "ShowDetailView.configureTableView(dataSource:):ShowDetailView.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in ShowDetailViewModel.showDetailView(_:rowsForTable:):ShowDetailViewModel.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ShowDetailView.init(coder:):ShowDetailView.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ShowDetailViewModel.tableView(_:numberOfRowsInSection:):ShowDetailViewModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ShowDetailViewModel.showDetailView(_:rowsForTable:):ShowDetailViewModel.swift">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
