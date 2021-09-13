@@ -17,12 +17,34 @@ class ShowDetailViewController: UIViewController {
         super.viewDidLoad()
         
         self.showDetailView = self.view as? ShowDetailView
+        self.showDetailView?.delegate = self
         self.showDetailView?.modelView = self.viewModel
         
         self.showDetailView?.reloadData()
 
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "segueEpisodeDetail"{
+            
+            guard let indexPath:IndexPath = sender as? IndexPath else {
+                print("Invalid Index")
+                return
+            }
+            
+            if let detailView = segue.destination as? EpisodeDetailViewController {
+                
+                let episode:Episode = (self.viewModel?.selectedShowForSegue(indexPath))!
+                let detailViewModel = EpisodeDetailViewModel(data:episode)
+                
+                detailView.viewModel = detailViewModel
+            }
+            
+        }
+        
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         self.showDetailView?.modelView?.stopRealmNotification()
     }
@@ -32,5 +54,12 @@ class ShowDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+}
+
+extension ShowDetailViewController: ShowDetailViewDelegate {
+    func showDetailView(_ showDetailView: ShowDetailView, didSelectedEpisodeAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "segueEpisodeDetail", sender: indexPath)
+    }
+    
 }
 

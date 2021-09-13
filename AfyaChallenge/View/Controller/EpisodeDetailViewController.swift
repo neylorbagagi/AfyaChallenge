@@ -10,49 +10,44 @@ import UIKit
 
 class EpisodeDetailViewController: UIViewController {
 
-    var episode:Episode?
+    var viewModel:EpisodeDetailViewModel?
     
     @IBOutlet weak var poster: UIImageView!
     @IBOutlet weak var name: UILabel!
-    @IBOutlet weak var number: UILabel!
+    @IBOutlet weak var duration: UILabel!
     @IBOutlet weak var season: UILabel!
     @IBOutlet weak var summary: UITextView!
+    @IBOutlet weak var close: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        if let episode = self.episode{
-            //configureView(withEpisode:episode)
-        }
+        guard let viewModel = self.viewModel else { return }
+        self.configure(viewModel: viewModel)
+        
+        self.close.addTarget(self, action: #selector(closeDetail), for: .touchDown)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func configure(viewModel:EpisodeDetailViewModel){
+        self.name.text = viewModel.name
+        self.duration.text = viewModel.duration
+        self.season.text = viewModel.season
+        self.summary.text = viewModel.summary
+        
+        viewModel.bind = { image in
+            DispatchQueue.main.async {
+                self.poster.image = image
+            }
+        }
+        viewModel.requestEpisodeImage()
     }
     
-//    func configureView(withEpisode episode:Episode) {
-//
-//        self.title = episode.name
-//        self.name.text = episode.name
-//        self.number.text = "Episode: \(episode.number)"
-//        self.season.text = "Season: \(episode.season)"
-//        self.summary.text = episode.summary
-//
-//        if let episodeImagePath = episode.image?.medium {
-//            if let imageUrl = URL(string: episodeImagePath){
-//                DispatchQueue.global().async {
-//                    if let imageData = try? Data(contentsOf: imageUrl){
-//                        if let episodePoster = UIImage(data: imageData){
-//                            DispatchQueue.main.async {
-//                                self.poster.image = episodePoster
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+    @objc func closeDetail(){
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
 
 }

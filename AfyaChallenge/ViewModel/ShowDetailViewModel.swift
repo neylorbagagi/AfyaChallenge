@@ -26,7 +26,6 @@ class ShowDetailViewModel:NSObject {
     
     private var data:Show!
     private var image:UIImage?
-    
     private var tableViewRows:Int? { return self.data.episodes.count }
     private var tableViewSections:Int? {
         var seasson = Set<Int>()
@@ -35,8 +34,8 @@ class ShowDetailViewModel:NSObject {
         }
         return seasson.count
     }
-    
     private var sectionsData:[Int:[Episode]] = [:]
+    
     
     init(data:Show) {
         super.init()
@@ -116,6 +115,9 @@ class ShowDetailViewModel:NSObject {
         }
     }
     
+    public func selectedShowForSegue(_ indexPath:IndexPath) -> Episode {
+        return self.sectionsData[indexPath.section+1]![indexPath.row]
+    }
 }
 
 extension ShowDetailViewModel: ShowDetailViewDataSource, UITableViewDataSource {

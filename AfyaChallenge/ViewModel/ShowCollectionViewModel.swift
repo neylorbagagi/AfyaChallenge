@@ -119,7 +119,12 @@ class ShowCollectionViewModel: NSObject {
     }
     
     func selectedShowForSegue(_ indexPath:IndexPath) -> Show {
-        return self.data[indexPath.row]
+        switch self.collectionMode {
+        case .search:
+            return self.dataFiltered[indexPath.row]
+        default:
+            return self.data[indexPath.row]
+        }
     }
 }
 

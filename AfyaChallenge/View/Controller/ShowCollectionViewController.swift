@@ -12,7 +12,6 @@ class ShowCollectionViewController: UICollectionViewController, ShowCollectionVi
 
     var viewModel:ShowCollectionViewModel?
     var isListeningScrollView:Bool = false
-    //var showDetailView:ShowDetailViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -181,11 +180,6 @@ extension ShowCollectionViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: self.footerInSectionSize)
     }
-    
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return CGSize(width: collectionView.frame.width, height: 51)
-//    }
     
 }
 

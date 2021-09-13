@@ -9,12 +9,16 @@
 import UIKit
 
 protocol ShowDetailViewDataSource {
-    func showDetailView(_ showDetailView:ShowDetailView, stringForTextComponent component:ShowDetailViewTextComponent) -> String?
-    func showDetailView(_ showDetailView:ShowDetailView, imageForImageView imageView:UIImageView) -> UIImage?
-    func showDetailView(_ showDetailView:ShowDetailView, enableDayWithLabel label:UILabel) -> Bool? 
-    func showDetailView(_ showDetailView:ShowDetailView, numberOfRowsForTable tableView:UITableView) -> Int
-    func showDetailView(_ showDetailView:ShowDetailView, numberOfSectionsForTable tableView:UITableView) -> Int
-    func showDetailView(_ showDetailView:ShowDetailView, statusForFavouriteButton button:UIButton) -> Bool
+    func showDetailView(_ showDetailView: ShowDetailView, stringForTextComponent component:ShowDetailViewTextComponent) -> String?
+    func showDetailView(_ showDetailView: ShowDetailView, imageForImageView imageView:UIImageView) -> UIImage?
+    func showDetailView(_ showDetailView: ShowDetailView, enableDayWithLabel label:UILabel) -> Bool?
+    func showDetailView(_ showDetailView: ShowDetailView, numberOfRowsForTable tableView:UITableView) -> Int
+    func showDetailView(_ showDetailView: ShowDetailView, numberOfSectionsForTable tableView:UITableView) -> Int
+    func showDetailView(_ showDetailView: ShowDetailView, statusForFavouriteButton button:UIButton) -> Bool
+}
+
+protocol ShowDetailViewDelegate {
+    func showDetailView(_ showDetailView: ShowDetailView, didSelectedEpisodeAt indexPath:IndexPath)
 }
 
 enum ShowDetailViewTextComponent {
@@ -29,6 +33,7 @@ enum ShowDetailViewTextComponent {
 class ShowDetailView: UIView {
 
     var modelView:ShowDetailViewModel?
+    var delegate:ShowDetailViewDelegate?
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var name: UILabel!
@@ -132,6 +137,8 @@ class ShowDetailView: UIView {
         self.modelView?.updateFavorite()
     }
     
+    
+    
     public func reloadData(){
         self.configure()
     }
@@ -157,6 +164,11 @@ extension ShowDetailView: ShowDetailViewModelDelegate {
 
 
 extension ShowDetailView: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let delegate = self.delegate else { return }
+        delegate.showDetailView(self, didSelectedEpisodeAt: indexPath)
+    }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         30
