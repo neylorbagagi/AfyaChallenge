@@ -12,6 +12,7 @@ class ShowCollectionViewController: UICollectionViewController, ShowCollectionVi
 
     var viewModel:ShowCollectionViewModel?
     var isListeningScrollView:Bool = false
+    //var showDetailView:ShowDetailViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,8 +72,8 @@ class ShowCollectionViewController: UICollectionViewController, ShowCollectionVi
             return
         }
         
-        let navigationController = self.navigationController as! MainNavigationController
-        navigationController.searchBar?.delegate = self
+        //let navigationController = self.navigationController as! MainNavigationController
+        //navigationController.searchBar?.delegate = self
     }
     
     func registerCollectionCells(collection:UICollectionView){
@@ -180,6 +181,12 @@ extension ShowCollectionViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: self.footerInSectionSize)
     }
+    
+    
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        return CGSize(width: collectionView.frame.width, height: 50)
+//    }
     
 }
 

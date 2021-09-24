@@ -8,55 +8,73 @@
 
 import UIKit
 
-class HomeTableViewController: UITableViewController {
+///TODO: favourite mist to update
 
-    private var tableViewModel:HomeTableViewModel?
-    private let heightForSection:CGFloat = 41
+enum HomeTableViewSection:CaseIterable {
+    case highlights, favourites, updates, rating
+    
+    static func sectionCase(from indexPath:IndexPath) -> HomeTableViewSection{
+        switch indexPath.row {
+            case 0:
+                return .highlights
+            case 1:
+                return .favourites
+            case 2:
+                return .updates
+            default:
+                return .rating
+        }
+    }
+}
+
+class HomeTableViewController: UITableViewController {
+   
+    let cellReuseIdentifier = "showTableCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.tableView.register(HighlightTableViewCell.self, forCellReuseIdentifier: "highlightTableCell")
+        self.tableView.separatorColor = .clear;
         self.tableView.register(ShowTableViewCell.self, forCellReuseIdentifier: "showTableCell")
         
-        self.tableViewModel = HomeTableViewModel()
-        self.tableView.dataSource = self.tableViewModel
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+}
 
-    // MARK: UITableViewDelegate
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return (tableView.frame.height - (self.heightForSection*3))/3
+extension HomeTableViewController{
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        HomeTableViewSection.allCases.count
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return self.heightForSection
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: self.cellReuseIdentifier, for: indexPath) as! ShowTableViewCell
+        cell.bindingFrom(ShowTableViewModel(sectionType: HomeTableViewSection.sectionCase(from: indexPath)))
+        cell.delegate = self
+        return cell
     }
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        let labelFrame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: self.heightForSection)
-        let label = UILabel(frame: labelFrame)
-        label.font = UIFont(name: "SFProText-Bold", size: 36)
-        
-        switch section {
-        case HomeTableViewSections.Highlights.rawValue:
-            label.text = "Highlights"
-            return label
-        case HomeTableViewSections.WatchNext.rawValue:
-            label.text = "Watch Next"
-            return label
-        case HomeTableViewSections.New.rawValue:
-            label.text = "New"
-            return label
-        default:
-            label.text = "Shows"
-            return label
-        }
-    }
+}
 
+extension HomeTableViewController: ShowTableViewCellDelegate{
+    
+    func tableViewCell(_ tableViewCell: UITableViewCell, modelView: ShowTableViewModel, didSelectItemAt indexPath: IndexPath) {
+        
+        guard let detail = self.storyboard?.instantiateViewController(withIdentifier: "ShowDetailViewController")
+                                                                        as? ShowDetailViewController else { return }
+        let show = modelView.data[indexPath.row]
+        let detailViewModel = ShowDetailViewModel(data: show)
+        detail.viewModel = detailViewModel
+        self.present(detail, animated: true,completion: nil)
+        
+    }
+    
+    
+    
+    
 }

@@ -48,16 +48,6 @@ class RealmManager {
             fatalError("Could not to load Realm")
         }
         
-       
-        
-//        let realmShows = realm.objects(Show.self).filter("name CONTAINS '\(string)'")
-//        completion(Array(realmShows), nil)
-        
-        
-        
-        
-        
-        
         /// Networking operation
         /// in case of Realm instance does not have the records for request page
         /// this process will get it from API
@@ -102,6 +92,127 @@ class RealmManager {
         //            completion([],error)
         //        }
         
+        
+    }
+    
+    func getShows(byIdList list:[Int], completion: @escaping (_ data:[Show],_ error:Error?) -> Void){
+   
+        guard let realm = try? Realm() else{
+            fatalError("Could not to load Realm")
+        }
+        
+        var response:[Show] = []
+        for id in list {
+            if let show = realm.object(ofType: Show.self, forPrimaryKey: id){
+                response.append(show)
+            }
+        }
+        if !response.isEmpty {
+            completion(response,nil)
+        }
+        
+        
+        /// Networking operation
+        /// in case of Realm instance does not have the records for request page
+        /// this process will get it from API
+        
+        
+        let group = DispatchGroup()
+        var responseData:[ShowRequestResponse] = []
+        
+        
+        for id in list {
+            group.enter()
+            APIClient.share.getShow(forId: id) { (data, error) in
+                guard error == nil,
+                  let data = data else{
+                    completion([],error)
+                    return
+                }
+                responseData.append(data)
+                group.leave()
+                
+            }
+        }
+        group.wait()
+        
+        do {
+            let shows = try Show.showsFromAPIResponse(responseData)
+            saveShows(shows: shows)
+            print(shows.count)
+            completion(Array(shows),nil)
+        } catch let error {
+            completion([],error)
+        }
+        
+    }
+    
+    func getFavourites(completion: @escaping (_ data:[Show],_ error:Error?) -> Void){
+   
+        guard let realm = try? Realm() else{
+            fatalError("Could not to load Realm")
+        }
+        
+        let response = realm.objects(Show.self).filter("favourite == true")
+        completion(Array(response),nil)
+
+    }
+    
+    func getRating(completion: @escaping (_ data:[Show],_ error:Error?) -> Void){
+   
+        guard let realm = try? Realm() else{
+            fatalError("Could not to load Realm")
+        }
+        
+        let response = realm.objects(Show.self).sorted(byKeyPath: "rating", ascending: false)
+        for show in response {
+            print(show.rating)
+        }
+        completion(Array(response),nil)
+
+    }
+    
+    func getUpdates(completion: @escaping (_ data:[Show],_ error:Error?) -> Void){
+   
+        
+        guard let realm = try? Realm() else{
+            fatalError("Could not to load Realm")
+        }
+        
+        let response = realm.objects(Show.self).sorted(byKeyPath: "updated", ascending: false)
+        
+        completion(Array(response),nil)
+        
+
+        /// Networking operation
+        /// in case of Realm instance does not have the records for request page
+        /// this process will get it from API
+        let dispatchGroup = DispatchGroup()
+
+        dispatchGroup.enter()
+        var updates:[String:Int] = [:]
+        APIClient.share.getShowUpdates(since: .day) { (data, error) in
+            guard error == nil,
+              let data = data else {
+                completion([],error)
+                return
+            }
+            updates = data
+            dispatchGroup.leave()
+        }
+        dispatchGroup.wait()
+        
+        let ids:[Int] = updates.keys.map { (Int($0) ?? 0) }
+
+        
+        self.getShows(byIdList: ids) { (data, error) in
+            guard error == nil else{
+                completion([],error)
+                return
+            }
+            
+            completion(data.sorted(by: { TimeInterval($0.updated) > TimeInterval($1.updated) }),nil)
+        }
         
     }
     
@@ -168,7 +279,7 @@ class RealmManager {
                 show.images["background"] = images.first
                 realm.add(show)
             }
-            completion(images.first!,nil)
+            completion(images.first ?? "",nil)
             return show
         } catch let error {
             completion("",error)

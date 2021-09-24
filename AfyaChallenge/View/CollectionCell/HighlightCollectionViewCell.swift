@@ -1,5 +1,5 @@
 //
-//  ShowCollectionViewCell.swift
+//  HighlightCollectionViewCell.swift
 //  AfyaChallenge
 //
 //  Created by Neylor Bagagi on 23/05/21.
@@ -8,11 +8,9 @@
 
 import UIKit
 
-///TODO: add to ViewModel
-
-class ShowCollectionViewCell: UICollectionViewCell {
+class HighlightCollectionViewCell: UICollectionViewCell {
     
-    var viewModel:ShowCellViewModel?
+    var viewModel:HighlightCellViewModel?
     var poster:UIImageView!
     var name:UILabel!
     
@@ -45,7 +43,7 @@ class ShowCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func bindingFrom(_ viewModel:ShowCellViewModel){
+    func bindingFrom(_ viewModel:HighlightCellViewModel){
         self.viewModel = viewModel
         self.name?.text = viewModel.name
         viewModel.bind = {(image) in
@@ -53,27 +51,5 @@ class ShowCollectionViewCell: UICollectionViewCell {
         }
         viewModel.requestImage()
     }
-    
-//    func set(show:Show, image:UIImage? = nil, completion: @escaping (_ showId:Int, _ image:UIImage?) -> Void) {
-//        self.title.text = show.name
-//
-//        if let image = image {
-//            self.poster.image = image
-//            completion(show.id,nil)
-//        } else {
-//            guard let url = URL(string: show.images["medium"] ?? "") else{
-//                print("Invalid image url")
-//                self.poster.image = UIImage()
-//                completion(show.id,nil)
-//                return
-//            }
-//            loadImage(from: url) { (image) in
-//                DispatchQueue.main.async {
-//                    self.poster.image = image
-//                    completion(show.id,image)
-//                }
-//            }
-//        }
-//    }
     
 }

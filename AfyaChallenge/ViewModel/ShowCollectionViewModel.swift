@@ -150,13 +150,16 @@ extension ShowCollectionViewModel: UICollectionViewDataSource {
                 show = self.data[indexPath.item]
         }
         
-        let itemNumber = NSNumber(value: show.id)
-        let cachedImage:UIImage? = self.imagesCache.object(forKey: itemNumber)
+//        let itemNumber = NSNumber(value: show.id)
+//        let cachedImage:UIImage? = self.imagesCache.object(forKey: itemNumber)
        
-        cell.set(show: show, image: cachedImage) { (id, image) in
-            guard let image = image else { return }
-            self.imagesCache.setObject(image, forKey: NSNumber(value:id))
-        }
+        let viewModel = ShowCellViewModel(data: show)
+        cell.bindingFrom(viewModel)
+        
+//        cell.set(show: show, image: cachedImage) { (id, image) in
+//            guard let image = image else { return }
+//            self.imagesCache.setObject(image, forKey: NSNumber(value:id))
+//        }
 
         return cell
     }
