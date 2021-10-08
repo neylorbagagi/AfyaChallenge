@@ -60,9 +60,6 @@ class ShowTableViewModel: NSObject {
                     self.data = Array(data.prefix(10))
                 }
         }
-        
-        
-
     }
 }
 

@@ -25,29 +25,25 @@ class ShowCellViewModel: NSObject {
         self.data = data
         self.name = data.name
     }
-    
-//          guard let url = URL(string: show.images["medium"] ?? "") else{
-    //                print("Invalid image url")
-    //                self.poster.image = UIImage()
-    //                completion(show.id,nil)
-    //                return
-    //            }
-    //            loadImage(from: url) { (image) in
-    //                DispatchQueue.main.async {
-    //                    self.poster.image = image
-    //                    completion(show.id,image)
-    //                }
-    //            }
-    
+
     
     func requestImage(){
+        
+        if let cachedImage = Cache.share.storage.object(forKey: data.images["medium"] as AnyObject){
+            self.image = cachedImage
+            return
+        }
+        
         if let imageUrl = data.images["medium"]{
-            guard let url = URL(string: imageUrl) else { return }
-            loadImage(from: url) { (image) in
-                self.image = image
+            guard let url = URL(string: imageUrl) else {
+                print("Invalid image url")
+                return
             }
-        } else {
-            print("Invalid image url")
+            loadImage(from: url) { (image) in
+                guard let validImage = image else { return }
+                Cache.share.storage.setObject(validImage, forKey: url.absoluteString as AnyObject)
+                self.image = validImage
+            }
         }
     }
 }

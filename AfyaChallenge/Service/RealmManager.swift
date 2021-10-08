@@ -8,6 +8,8 @@
 import Foundation
 import RealmSwift
 
+
+// TODO: use async/await
 class RealmManager {
     
     static let share = RealmManager()
@@ -117,33 +119,33 @@ class RealmManager {
         /// this process will get it from API
         
         
-        let group = DispatchGroup()
-        var responseData:[ShowRequestResponse] = []
-        
-        
-        for id in list {
-            group.enter()
-            APIClient.share.getShow(forId: id) { (data, error) in
-                guard error == nil,
-                  let data = data else{
-                    completion([],error)
-                    return
-                }
-                responseData.append(data)
-                group.leave()
-                
-            }
-        }
-        group.wait()
-        
-        do {
-            let shows = try Show.showsFromAPIResponse(responseData)
-            saveShows(shows: shows)
-            print(shows.count)
-            completion(Array(shows),nil)
-        } catch let error {
-            completion([],error)
-        }
+//        let group = DispatchGroup()
+//        var responseData:[ShowRequestResponse] = []
+//        
+//        
+//        for id in list {
+//            group.enter()
+//            APIClient.share.getShow(forId: id) { (data, error) in
+//                guard error == nil,
+//                  let data = data else{
+//                    completion([],error)
+//                    return
+//                }
+//                responseData.append(data)
+//                group.leave()
+//                
+//            }
+//        }
+//        group.wait()
+//        
+//        do {
+//            let shows = try Show.showsFromAPIResponse(responseData)
+//            saveShows(shows: shows)
+//            print(shows.count)
+//            completion(Array(shows),nil)
+//        } catch let error {
+//            completion([],error)
+//        }
         
     }
     
@@ -284,6 +286,17 @@ class RealmManager {
         } catch let error {
             completion("",error)
             return show
+        }
+    }
+    
+    func updateShowFavouriteStatus(show:Show){
+        guard let realm = try? Realm() else{
+            fatalError("Could not to load Realm")
+        }
+        
+        try! realm.write{
+            show.favourite.toggle()
+            print(show.favourite)
         }
     }
     

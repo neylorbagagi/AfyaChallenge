@@ -34,7 +34,7 @@ class EpisodeDetailViewModel:NSObject {
 
     }
     
-    func requestEpisodeImage(){
+    func requestImage(){
         guard let url = URL(string: self.data?.images["medium"] ?? "") else { return }
         loadImage(from: url) { (image) in
             self.image = image

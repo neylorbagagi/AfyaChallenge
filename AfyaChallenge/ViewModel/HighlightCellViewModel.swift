@@ -29,17 +29,31 @@ class HighlightCellViewModel: NSObject {
     }
     
     func requestImage(){
+        
+        if let cachedImage = Cache.share.storage.object(forKey: data.images["background"] as AnyObject){
+            self.image = cachedImage
+            return
+        }
+        
         if let imageUrl = data.images["background"]{
+            guard let url = URL(string: imageUrl) else {
+                print("Invalid image url")
+                return
+            }
+            loadImage(from: url) { (image) in
+                guard let validImage = image else { return }
+                Cache.share.storage.setObject(validImage, forKey: url.absoluteString as AnyObject)
+                self.image = validImage
+                return
+            }
+        }
+        
+        RealmManager.share.getImages(byShow: data) { (imageUrl, error) in
             guard let url = URL(string: imageUrl) else { return }
             loadImage(from: url) { (image) in
-                self.image = image
-            }
-        } else {
-            RealmManager.share.getImages(byShow: data) { (imageUrl, error) in
-                guard let url = URL(string: imageUrl) else { return }
-                loadImage(from: url) { (image) in
-                    self.image = image
-                }
+                guard let validImage = image else { return }
+                Cache.share.storage.setObject(validImage, forKey: url.absoluteString as AnyObject)
+                self.image = validImage
             }
         }
     }
