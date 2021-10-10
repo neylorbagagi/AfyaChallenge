@@ -11,6 +11,7 @@
 ///TODO: verify if is saving episodes
 ///TODO: the highlight request is over writing the favourite attribute
 ///TODO: tableHeight wrong calculation
+///TODO: Update it's name
 
 import UIKit
 

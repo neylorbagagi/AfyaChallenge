@@ -203,7 +203,6 @@
 				F054C9CB2649C86300760E66 /* Main.storyboard */,
 				F054C9D02649C86600760E66 /* LaunchScreen.storyboard */,
 				F0314D27270112D400946DB9 /* ScheduleView.swift */,
-				F0DF3AFF26E95BB900608F92 /* ShowDetailView.swift */,
 				F0BBEFA82702469C00FE6EA3 /* HeaderView.swift */,
 				F0BBEFAC27024CDF00FE6EA3 /* InfoBoxView.swift */,
 				F00AECAD2706838D00EE1635 /* SummaryView.swift */,
@@ -219,7 +218,6 @@
 				F02537CC26B5C72000187FCE /* ShowCollectionViewModel.swift */,
 				F06D0E0326DC1C27002968E7 /* ShowCollectionCellViewModel.swift */,
 				F0519A4C2695EE320060E476 /* HighlightCellViewModel.swift */,
-				F06BA1E026DD630600B293E1 /* ShowDetailViewModel.swift */,
 				F02FED0826EF8D9B008E818F /* EpisodeDetailViewModel.swift */,
 				F062206626F95DE40060A080 /* ShowCellViewModel.swift */,
 				F0314D2326FE760800946DB9 /* NewShowDetailViewModel.swift */,
@@ -238,6 +236,9 @@
 		F0519A4B2694BC030060E476 /* Backup */ = {
 			isa = PBXGroup;
 			children = (
+				F0DF3AFF26E95BB900608F92 /* ShowDetailView.swift */,
+				F08FE948264B743700D01F4E /* ShowDetailViewController.swift */,
+				F06BA1E026DD630600B293E1 /* ShowDetailViewModel.swift */,
 				F0AA6DA1265ECA4A006BFAE8 /* HomeTableViewDelegate.swift */,
 			);
 			path = Backup;
@@ -295,11 +296,10 @@
 			isa = PBXGroup;
 			children = (
 				F0519A402693E9DB0060E476 /* HomeTableViewController.swift */,
+				F0314D1F26FE75A800946DB9 /* NewShowDetailViewController.swift */,
 				F08FE943264B51FA00D01F4E /* ShowCollectionViewController.swift */,
-				F08FE948264B743700D01F4E /* ShowDetailViewController.swift */,
 				F08FE94A264C19E400D01F4E /* EpisodeDetailViewController.swift */,
 				F00634A026D03C3B001771EE /* MainNavigationController.swift */,
-				F0314D1F26FE75A800946DB9 /* NewShowDetailViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";

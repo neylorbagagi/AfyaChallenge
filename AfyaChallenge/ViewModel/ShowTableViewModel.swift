@@ -8,8 +8,9 @@
 
 import Foundation
 import UIKit
-
+import RealmSwift
 /// TODO: cache images to userDefaults
+/// TODO: Use loading in views
 
 class ShowTableViewModel: NSObject {
 
@@ -24,10 +25,46 @@ class ShowTableViewModel: NSObject {
     
     var bind:(([Show]) -> Void)?
     
+    var token:NotificationToken?
+    
     init(sectionType:HomeTableViewSection) {
         super.init()
         self.sectionTitle = "\(sectionType)"
         self.sectionType = sectionType
+        
+        if self.sectionType == HomeTableViewSection.favourites {
+            guard let realm = try? Realm() else{
+                fatalError("Could not to load Realm")
+            }
+            
+            //realm.objects(Show.self).filter("favourite == true")
+            self.token = realm.objects(Show.self).filter("favourite == true").observe() { changes in
+                switch changes {
+                    case .initial:
+                        // Results are now populated and can be accessed without blocking the UI
+                        print("initial")
+                        break
+                    case .update(_, let deletions, let insertions, let modifications):
+                        print("updated")
+                        RealmManager.share.getFavourites() {(data, error) in
+                            guard error == nil else { return }
+                            self.data = data
+                        }
+                        break
+                    case .error(let err):
+                        // An error occurred while opening the Realm file on the background worker thread
+                        fatalError("\(err)")
+                        break
+                }
+            }
+            
+        }
+    }
+    
+    deinit {
+        if (self.token != nil){
+            self.token?.invalidate()
+        }
     }
     
     func requestData(){
@@ -46,7 +83,6 @@ class ShowTableViewModel: NSObject {
             case .updates:
                 RealmManager.share.getUpdates() {(data, error) in
                     guard error == nil else { return }
-                    
                     self.data = Array(data.prefix(10))
                 }
             case .rating:

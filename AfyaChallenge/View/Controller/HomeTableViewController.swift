@@ -31,6 +31,8 @@ class HomeTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
 }
 
 extension HomeTableViewController: ShowTableViewCellDelegate{
@@ -41,6 +43,8 @@ extension HomeTableViewController: ShowTableViewCellDelegate{
         let detailViewModel = NewShowDetailViewModel(data: show)
         detailViewController.viewModel = detailViewModel
         self.present(detailViewController, animated: true,completion: nil)
+        
+        
     }
     
 }

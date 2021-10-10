@@ -18,125 +18,107 @@ protocol ShowTableViewCellDelegate {
 class ShowTableViewCell: UITableViewCell {
 
     var viewModel:ShowTableViewModel?
-    var collectionView:UICollectionView?
-    var sectionTitle:UILabel?
-    var sectionEmptyLabel:UILabel?
     var sectionType:HomeTableViewSection?
-    var container:UIView?
-    var collectionViewHeight:NSLayoutConstraint?
     
     var delegate:ShowTableViewCellDelegate?
     
-    override func updateConstraints() {
-        if needsUpdateConstraints() {
-            self.settupCollectionConstraints(to: self.container!, related: self.sectionTitle!)
-            self.settupContainerViewConstraints(to: self)
-            self.collectionView?.reloadData()
-        }
-        
-        
-        super.updateConstraints()
-    }
+    var collectionViewHeight:NSLayoutConstraint?
+    var containerViewHeight:NSLayoutConstraint?
+    
+    
+    // O U T L E T S
+    var container:UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    var sectionTitle:UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = ""
+        label.textAlignment = .left
+        label.font = UIFont(name: "SFProText-Bold", size: 36)
+        label.textColor = #colorLiteral(red: 0.137254902, green: 0.137254902, blue: 0.137254902, alpha: 1)
+        return label
+    }()
+    
+    var collectionView:UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: flowLayout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(ShowCollectionViewCell.self, forCellWithReuseIdentifier: "showCell")
+        collectionView.register(HighlightCollectionViewCell.self, forCellWithReuseIdentifier: "highlightCell")
+        collectionView.backgroundColor = .white
+        return collectionView
+    }()
+
+    var sectionEmptyLabel:UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isHidden = true
+        label.text = "No Shows for this section yet :["
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.font = UIFont(name: "SFProText-Regular", size: 26)
+        label.textColor = #colorLiteral(red: 0.137254902, green: 0.137254902, blue: 0.137254902, alpha: 1)
+        return label
+    }()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.contentView.isUserInteractionEnabled = false
         self.selectionStyle = .none
-        self.configureContainerView(to: self)
-        self.configureSectionTitle(to: self.container!)
-        self.configureCollectionView(to: self.container!, related: self.sectionTitle!)
-        self.configureCollectionLabel(to: self.container!, related: self.sectionTitle!)
+        
+        self.collectionView.dataSource = self.viewModel
+        self.collectionView.delegate = self
+        
+        self.addSubview(self.container)
+        self.container.addSubview(self.sectionTitle)
+        self.container.addSubview(self.collectionView)
+        self.container.addSubview(self.sectionEmptyLabel)
+        
+        self.collectionViewHeight = self.collectionView.heightAnchor.constraint(equalToConstant: 180)
+        self.collectionView.addConstraint(self.collectionViewHeight!)
+        
+        NSLayoutConstraint.activate([
+            self.container.topAnchor.constraint(equalTo: self.topAnchor),
+            self.container.leftAnchor.constraint(equalTo: self.leftAnchor),
+            self.container.rightAnchor.constraint(equalTo: self.rightAnchor),
+            self.container.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            
+            self.sectionTitle.topAnchor.constraint(equalTo: self.container.topAnchor),
+            self.sectionTitle.leftAnchor.constraint(equalTo: self.container.leftAnchor, constant: 16),
+            
+            self.collectionView.topAnchor.constraint(equalTo: self.sectionTitle.bottomAnchor),
+            self.collectionView.leftAnchor.constraint(equalTo: self.container.leftAnchor, constant: 10),
+            self.collectionView.rightAnchor.constraint(equalTo: self.container.rightAnchor),
+            self.collectionView.bottomAnchor.constraint(equalTo: self.container.bottomAnchor),
+            
+//            self.sectionEmptyLabel.center
+            
+            self.sectionEmptyLabel.topAnchor.constraint(equalTo: self.sectionTitle.bottomAnchor),
+            self.sectionEmptyLabel.leftAnchor.constraint(equalTo: self.container.leftAnchor),
+            self.sectionEmptyLabel.rightAnchor.constraint(equalTo: self.container.rightAnchor),
+            self.sectionEmptyLabel.bottomAnchor.constraint(equalTo: self.container.bottomAnchor),
+            self.sectionEmptyLabel.heightAnchor.constraint(equalToConstant: 180)
+        ])
+    
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureContainerView(to view:UIView){
-        self.container = UIView()
-        self.container?.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(self.container!)
-        self.settupContainerViewConstraints(to: view)
-    }
-    
-    func configureSectionTitle(to view:UIView){
-        self.sectionTitle = UILabel()
-        self.sectionTitle?.font = self.sectionTitle?.font.withSize(36)
-        self.sectionTitle?.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(self.sectionTitle!)
-        
-        self.sectionTitle?.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 5).isActive = true
-        self.sectionTitle?.topAnchor.constraint(equalTo: view.topAnchor, constant: 5).isActive = true
-        self.sectionTitle?.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -5).isActive = true
-        self.sectionTitle?.heightAnchor.constraint(equalToConstant: 61).isActive = true
-    }
-    
-    func configureCollectionView(to view:UIView, related label:UILabel) {
-        
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .horizontal
-        let collectionViewFrame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        self.collectionView = UICollectionView(frame: collectionViewFrame, collectionViewLayout: flowLayout)
-        self.collectionView?.backgroundColor = .white
-        self.collectionView?.register(ShowCollectionViewCell.self, forCellWithReuseIdentifier: "showCell")
-        self.collectionView?.register(HighlightCollectionViewCell.self, forCellWithReuseIdentifier: "highlightCell")
-        self.collectionView?.translatesAutoresizingMaskIntoConstraints = false
-        self.collectionView?.dataSource = self.viewModel
-        self.collectionView?.delegate = self
-        
-        view.addSubview(self.collectionView!)
-        self.settupCollectionConstraints(to: view, related: label)
-    }
-    
-    func configureCollectionLabel(to view:UIView, related label:UILabel){
-        self.sectionEmptyLabel = UILabel()
-        //self.sectionEmptyLabel?.font = self.sectionTitle?.font.withSize(36)
-        self.sectionEmptyLabel?.text = "No Shows for this section  :[ "
-        self.sectionEmptyLabel?.textAlignment = .center
-        self.sectionEmptyLabel?.isHidden = true
-        self.sectionEmptyLabel?.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(self.sectionEmptyLabel!)
-        self.settupCollectionLabelConstraints(to: view, related: label)
-    }
-    
-    func settupCollectionLabelConstraints(to view:UIView, related label:UILabel){
-
-        self.sectionEmptyLabel?.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 5).isActive = true
-        self.sectionEmptyLabel?.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 5).isActive = true
-        self.sectionEmptyLabel?.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -5).isActive = true
-        self.sectionEmptyLabel?.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -5).isActive = true
-    }
-    
-    func settupContainerViewConstraints(to view:UIView){
-        
-        self.container?.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        self.container?.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        self.container?.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        self.container?.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-    }
-
-    func settupCollectionConstraints(to view:UIView, related label:UILabel){
-        
-        if self.collectionViewHeight == nil {
-            self.collectionViewHeight = self.collectionView?.heightAnchor.constraint(equalToConstant: 194.619)
-        }
-        self.collectionView?.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        self.collectionView?.topAnchor.constraint(equalTo: label.bottomAnchor).isActive = true
-        self.collectionView?.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        self.collectionView?.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        self.collectionView?.heightAnchor.constraint(equalToConstant: self.collectionViewHeight?.constant ?? 110).isActive = true
-    }
-    
     func bindingFrom(_ viewModel:ShowTableViewModel){
         self.viewModel = viewModel
-        self.sectionTitle?.text = viewModel.sectionTitle
+        self.sectionTitle.text = viewModel.sectionTitle
         self.sectionType = viewModel.sectionType
-        self.collectionView?.dataSource = viewModel
+        self.collectionView.dataSource = viewModel
         viewModel.bind = { (data) in
-            self.sectionEmptyLabel?.isHidden = data.count == 0 ? false : true
-            self.collectionView?.reloadData()
+            self.sectionEmptyLabel.isHidden = data.count == 0 ? false : true
+            self.collectionView.reloadData()
         }
         viewModel.requestData()
     }
@@ -195,10 +177,10 @@ extension ShowTableViewCell: UICollectionViewDelegateFlowLayout{
         /// Formula (original height / original width) x new width = new height
         let heightForItem = (self.itemsOriginalHeight/self.itemsOriginalWidth)*widthForItem
         
+        self.collectionViewHeight?.constant = heightForItem
+        
         return CGSize(width: widthForItem, height: heightForItem)
         
-        // self.collectionViewHeight? = (self.collectionView?.heightAnchor.constraint(equalToConstant: heightForItem+sectionInsets.top+sectionInsets.bottom))!
-        // self.collectionView?.setNeedsUpdateConstraints()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -209,6 +191,7 @@ extension ShowTableViewCell: UICollectionViewDelegateFlowLayout{
         return self.sectionInsets.top
     }
 
+    
 
 }
 
