@@ -10,21 +10,16 @@ import UIKit
 
 ///TODO: favourite mist to update
 
-
-
 class HomeTableViewController: UITableViewController {
    
     var viewModel:HomeTableViewModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.tableView.separatorColor = .clear;
         self.tableView.register(ShowTableViewCell.self, forCellReuseIdentifier: "showTableCell")
-        
         self.viewModel = HomeTableViewModel()
         self.tableView.dataSource = self.viewModel
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -38,13 +33,11 @@ class HomeTableViewController: UITableViewController {
 extension HomeTableViewController: ShowTableViewCellDelegate{
     
     func tableViewCell(_ tableViewCell: UITableViewCell, modelView: ShowTableViewModel, didSelectItemAt indexPath: IndexPath) {
-        let detailViewController = NewShowDetailViewController()
+        let detailViewController = ShowDetailViewController()
         let show = modelView.data[indexPath.row]
-        let detailViewModel = NewShowDetailViewModel(data: show)
+        let detailViewModel = ShowDetailViewModel(data: show)
         detailViewController.viewModel = detailViewModel
         self.present(detailViewController, animated: true,completion: nil)
-        
-        
     }
     
 }

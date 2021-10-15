@@ -15,9 +15,9 @@
 
 import UIKit
 
-class NewShowDetailViewController: UIViewController {
+class ShowDetailViewController: UIViewController {
 
-    var viewModel:NewShowDetailViewModel?
+    var viewModel:ShowDetailViewModel?
     private let reuseIdentifier = "EpisodeCellIdentifier"
     
     // O U T L E T S
@@ -48,7 +48,7 @@ class NewShowDetailViewController: UIViewController {
         imageView.layer.cornerRadius = 6
         imageView.layer.masksToBounds = true // this keeps cornerRadius property
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .black
+        imageView.backgroundColor = #colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.9411764706, alpha: 1)
         return imageView
     }()
     
@@ -92,8 +92,9 @@ class NewShowDetailViewController: UIViewController {
         
         self.headerView.delegate = self
         
-        self.configure(viewModel: viewModel)
-
+        DispatchQueue.main.async {
+            self.configure(viewModel: viewModel)
+        }
 
         self.table.register(UITableViewCell.self, forCellReuseIdentifier: self.reuseIdentifier)
         self.table.delegate = self
@@ -155,19 +156,31 @@ class NewShowDetailViewController: UIViewController {
         
     }
 
-    func configure(viewModel:NewShowDetailViewModel){
+    override func viewWillDisappear(_ animated: Bool) {
+        //asdasda
+        self.viewModel = nil
+    }
+    
+    deinit {
+        print("deiniting")
+    }
+    
+    func configure(viewModel:ShowDetailViewModel){
         
         viewModel.bind = { image in
             DispatchQueue.main.async {
                 self.imageView.image = image
             }
         }
-        
         viewModel.requestImage()
         
         viewModel.bindEpisode = { rowsCount, seassonsCount in
             DispatchQueue.main.async {
-                self.updateTableHeight(viewModel: viewModel)
+                if rowsCount > 0 {
+                    self.updateTableHeight(viewModel: viewModel)
+                } else {
+                    self.table.isHidden = true
+                }
             }
         }
         
@@ -202,7 +215,7 @@ class NewShowDetailViewController: UIViewController {
         
     }
     
-    func updateTableHeight(viewModel:NewShowDetailViewModel){
+    func updateTableHeight(viewModel:ShowDetailViewModel){
         let tableHeight = viewModel.heightForTableView(rowCellHeight: self.table.rowHeight,
                                                        seassonViewHeight: self.table.sectionHeaderHeight)
         let constrait = self.table.constraints.filter{$0.firstAttribute == .height}.first
@@ -211,7 +224,7 @@ class NewShowDetailViewController: UIViewController {
 
 }
 
-extension NewShowDetailViewController: HeaderViewDelegate {
+extension ShowDetailViewController: HeaderViewDelegate {
     func headerView(_ headerView: HeaderView, favouriteButtonDidChanceTo status:Bool) {
         
         guard let viewModel = self.viewModel else { return }
@@ -221,7 +234,7 @@ extension NewShowDetailViewController: HeaderViewDelegate {
     
 }
 
-extension NewShowDetailViewController: UITableViewDelegate {
+extension ShowDetailViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let viewModel = self.viewModel else { return }

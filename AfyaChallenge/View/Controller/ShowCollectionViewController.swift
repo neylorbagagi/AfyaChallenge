@@ -8,26 +8,85 @@
 
 import UIKit
 
-class ShowCollectionViewController: UICollectionViewController, ShowCollectionViewModelDelegate {
+///TODO: MAKE UICollectionViewDelegateFlowLayout smarter
+///TODO: FIX "negative sizes are not supported in the flow layout"
+
+class ShowCollectionViewController: UIViewController {
 
     var viewModel:ShowCollectionViewModel?
     var isListeningScrollView:Bool = false
-    //var showDetailView:ShowDetailViewController?
+    var collectionView:UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(ShowCollectionViewCell.self, forCellWithReuseIdentifier: "showCollectionCell")
+        collectionView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        //collectionView.bounces = false
+        return collectionView
+    }()
+    
+    var navigationBar:UINavigationBar = {
+        let navigationBar = UINavigationBar(frame: .zero)
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        navigationBar.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        return navigationBar
+    }()
+    
+    var searchResult:SearchViewController = {
+        let searchResult = SearchViewController()
+        return searchResult
+    }()
+    
+    var searchButton:UIBarButtonItem = {
+        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: nil, action: #selector(presentSearchViewController))
+        searchButton.tintColor = #colorLiteral(red: 0.1369999945, green: 0.1369999945, blue: 0.1369999945, alpha: 1)
+        return searchButton
+    }()
+    
+    var imageView:UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "logo"))
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.registerCollectionCells(collection: self.collectionView!)
+        self.view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
         self.viewModel = ShowCollectionViewModel()
-        self.viewModel?.delegate = self
         
-        self.collectionView?.dataSource = self.viewModel
-        self.collectionView?.bounces = false
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        self.registerForSearchDelegate()
+        self.viewModel?.dataBind = {
+            self.isListeningScrollView = true
+            self.collectionView.reloadData()
+        }
+        
+        self.collectionView.dataSource = self.viewModel
+        self.collectionView.delegate = self
+
+        let navigationItem = UINavigationItem()
+        navigationItem.rightBarButtonItem = self.searchButton
+        navigationItem.titleView = self.imageView
+        
+        self.navigationBar.setItems([navigationItem], animated: true)
+        
+        self.view.addSubview(self.navigationBar)
+        self.view.addSubview(self.collectionView)
+        
+        NSLayoutConstraint.activate([
+            self.navigationBar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.navigationBar.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+            self.navigationBar.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+            self.navigationBar.heightAnchor.constraint(equalToConstant: 44),
+
+            self.imageView.heightAnchor.constraint(equalToConstant: 34),
+            
+            self.collectionView.topAnchor.constraint(equalTo: self.navigationBar.bottomAnchor),
+            self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+            self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+            self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+        ])
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -45,64 +104,17 @@ class ShowCollectionViewController: UICollectionViewController, ShowCollectionVi
         // Dispose of any resources that can be recreated.
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "segueShowDetail"{
-            
-            guard let indexPath:IndexPath = self.collectionView?.indexPathsForSelectedItems?.first else {
-                print("Invalid Index")
-                return
-            }
-            
-            if let detailView = segue.destination as? ShowDetailViewController {
-                
-                let show:Show = self.viewModel!.selectedShowForSegue(indexPath)
-                let detailViewModel = ShowDetailViewModel(data: show)
-                
-                detailView.viewModel = detailViewModel
-            }
-            
-        }
-        
+    @objc func presentSearchViewController(){
+        let resultsViewController = SearchViewController()
+        resultsViewController.viewModel = SearchViewModel()
+        self.present(resultsViewController, animated: true,completion: nil)
     }
-    
-    func registerForSearchDelegate(){
-        guard self.navigationController != nil else{
-            print("No Navigation Controller set")
-            return
-        }
-        
-        //let navigationController = self.navigationController as! MainNavigationController
-        //navigationController.searchBar?.delegate = self
-    }
-    
-    func registerCollectionCells(collection:UICollectionView){
-        collection.register(ShowCollectionViewCell.self, forCellWithReuseIdentifier: "showCollectionCell")
-        
-    }
-
-    func didDataUpdate(_ viewModel: ShowCollectionViewModel, _ collectionMode:ShowCollectionMode, _ error: Error?) {
-        switch collectionMode {
-        case .search:
-            self.isListeningScrollView = false
-        default:
-            self.isListeningScrollView = true
-        }
-        
-        guard error == nil else {
-            print(error.debugDescription)
-            return
-        }
-        
-        self.collectionView?.reloadData()
-    }
-    
       
 }
 
-extension ShowCollectionViewController{
+extension ShowCollectionViewController:UICollectionViewDelegate{
     
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let scrollViewHeightSize:CGFloat = scrollView.frame.size.height
         let scrollViewContentSize:CGFloat = scrollView.contentSize.height
         let scrollViewPosition = scrollViewContentSize-scrollViewHeightSize
@@ -116,32 +128,12 @@ extension ShowCollectionViewController{
         }
     }
     
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "segueShowDetail", sender: nil)
-    }
-    
-}
-
-
-extension ShowCollectionViewController: UISearchBarDelegate {
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        self.isListeningScrollView = false
-        self.viewModel?.switchCollectionMode(to: .search)
-        self.collectionView?.reloadData()
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.isListeningScrollView = false
-        self.viewModel?.requestData(searchText)
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = nil
-        searchBar.resignFirstResponder()
-        self.viewModel?.switchCollectionMode(to: .page)
-        self.collectionView?.reloadData()
-        self.isListeningScrollView = true
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailViewController = ShowDetailViewController()
+        let show = self.viewModel?.selectedShowForSegue(indexPath)
+        let detailViewModel = ShowDetailViewModel(data: show!)
+        detailViewController.viewModel = detailViewModel
+        self.present(detailViewController, animated: true,completion: nil)
     }
     
 }
@@ -157,7 +149,7 @@ extension ShowCollectionViewController: UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let collectionWidth = collectionView.frame.width
+        let collectionWidth = collectionView.contentSize.width - 8
         
         /// Calculate width
         let widthPaddingSpace = self.sectionInsets.left * (self.itemsPerRow + 1)
@@ -182,11 +174,6 @@ extension ShowCollectionViewController: UICollectionViewDelegateFlowLayout{
         return CGSize(width: collectionView.frame.width, height: self.footerInSectionSize)
     }
     
-    
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return CGSize(width: collectionView.frame.width, height: 50)
-//    }
     
 }
 

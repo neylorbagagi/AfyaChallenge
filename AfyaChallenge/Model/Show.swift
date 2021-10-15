@@ -50,10 +50,38 @@ class Show:Object {
         self.webChannel = object.webChannel?.name ?? "Unknow"
         self.images["medium"] = object.image?.medium ?? ""
         self.images["original"] = object.image?.original ?? ""
+        self.images["background"] = ""
         self.summary = object.summary ?? "Unknow"
         self.updated = object.updated ?? 0
         self.favourite = false
         self.episodes = List<Episode>()
+    }
+    
+    func updateVersion(update:Show) -> Show {
+        let show:Show = Show()
+        show.id = self.id
+        show.name = update.name
+        show.type = update.type
+        show.language = update.language
+        show.genres = update.genres
+        show.status = update.status
+        show.runtime = update.runtime
+        show.averageRuntime = update.averageRuntime
+        show.premiered = update.premiered
+        show.scheduleTime = update.scheduleTime
+        show.scheduleDays = update.scheduleDays
+        show.rating = update.rating
+        show.weight = update.weight
+        show.network = update.network
+        show.webChannel = update.webChannel
+        show.images["medium"] = update.images["medium"]
+        show.images["original"] = update.images["original"]
+        show.images["background"] = self.images["background"]
+        show.summary = update.summary
+        show.updated = update.updated
+        show.favourite = self.favourite
+        show.episodes = self.episodes
+        return show
     }
     
     private static func arrayToList<T>(_ array:Array<T>) -> List<T> {

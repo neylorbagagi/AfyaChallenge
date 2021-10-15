@@ -9,7 +9,9 @@ import Foundation
 import RealmSwift
 
 
-// TODO: use async/await
+/// TODO: use async/await
+/// TODO: precisa corrigir com dispatchGroup.leave()
+
 class RealmManager {
     
     static let share = RealmManager()
@@ -60,6 +62,7 @@ class RealmManager {
         APIClient.share.getShows(forString: string) { (data, error) in
             guard error == nil else{
                 completion([],error)
+                dispatchGroup.leave()
                 return
             }
             responseData = data
@@ -230,6 +233,7 @@ class RealmManager {
         APIClient.share.getShowEpisodes(forShow: show.id) { (data, error) in
             guard error == nil else{
                 completion([],error)
+                dispatchGroup.leave()
                 return
             }
             responseData = data
@@ -251,7 +255,7 @@ class RealmManager {
         }
     }
     
-    func getImages(byShow show:Show, completion: @escaping (_ data:String, _ error:Error?) -> Void) -> Show {
+    func getImages(byShow show:Show, completion: @escaping (_ data:String, _ error:Error?) -> Void){
         
         guard let realm = try? Realm() else{
             fatalError("Could not to load Realm")
@@ -263,6 +267,7 @@ class RealmManager {
         APIClient.share.getShowImages(forShow: show.id) { (data, error) in
             guard error == nil else{
                 completion("",error)
+                dispatchGroup.leave()
                 return
             }
             responseData = data
@@ -270,23 +275,24 @@ class RealmManager {
         }
         dispatchGroup.wait()
         
-        do {
-            var images:[String] = []
-            let backgroundImages = responseData.filter({$0.type == "background"})
-            for image in backgroundImages{
-                images.append(image.resolutions.original.url)
+        if responseData.count > 0 {
+            do {
+                var images:[String] = []
+                let backgroundImages = responseData.filter({$0.type == "background"})
+                for image in backgroundImages{
+                    images.append(image.resolutions.original.url)
+                }
+                
+                try realm.write{
+                    show.images["background"] = images.first
+                    realm.add(show)
+                }
+                completion(images.first ?? "",nil)
+            } catch let error {
+                completion("",error)
             }
-            
-            try realm.write{
-                show.images["background"] = images.first
-                realm.add(show)
-            }
-            completion(images.first ?? "",nil)
-            return show
-        } catch let error {
-            completion("",error)
-            return show
         }
+        
     }
     
     func updateShowFavouriteStatus(show:Show){
@@ -304,8 +310,19 @@ class RealmManager {
         guard let realm = try? Realm() else{
             fatalError("Could not to load Realm")
         }
+        
+        var updateList:[Show] = []
+        for show in shows {
+            if let currentShow = realm.object(ofType: Show.self, forPrimaryKey: show.id) {
+                updateList.append(currentShow.updateVersion(update: show))
+            } else {
+                updateList.append(show)
+            }
+        }
+        
+        
         try! realm.write{
-            realm.add(shows, update: Realm.UpdatePolicy.modified)
+            realm.add(updateList, update: Realm.UpdatePolicy.modified)
         }
     }
     

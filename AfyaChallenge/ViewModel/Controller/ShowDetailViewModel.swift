@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class NewShowDetailViewModel: NSObject {
+class ShowDetailViewModel: NSObject {
     
     private let data:Show
     let name:String
@@ -73,26 +73,34 @@ class NewShowDetailViewModel: NSObject {
             self.image = cachedImage
             return
         }
-        
+
         if let imageUrl = data.images["background"]{
             guard let url = URL(string: imageUrl) else {
                 print("Invalid image url")
                 return
             }
-            loadImage(from: url) { (image) in
-                guard let validImage = image else { return }
-                Cache.share.storage.setObject(validImage, forKey: url.absoluteString as AnyObject)
-                self.image = validImage
-                return
+            DispatchQueue.main.async {
+                loadImage(from: url) { (image) in
+                    guard let validImage = image else { return }
+                    Cache.share.storage.setObject(validImage, forKey: url.absoluteString as AnyObject)
+                    self.image = validImage
+                    return
+                }
             }
-        }
+        } else {
         
-        RealmManager.share.getImages(byShow: data) { (imageUrl, error) in
-            guard let url = URL(string: imageUrl) else { return }
-            loadImage(from: url) { (image) in
-                guard let validImage = image else { return }
-                Cache.share.storage.setObject(validImage, forKey: url.absoluteString as AnyObject)
-                self.image = validImage
+            RealmManager.share.getImages(byShow: self.data) { (imageUrl, error) in
+                guard error == nil,
+                  let url = URL(string: imageUrl) else{
+                    print("Image Load Error: \(error?.localizedDescription)")
+                    self.image = UIImage(named: "no_image")
+                    return
+                }
+                loadImage(from: url) { (image) in
+                    guard let validImage = image else { return }
+                    Cache.share.storage.setObject(validImage, forKey: url.absoluteString as AnyObject)
+                    self.image = validImage
+                }
             }
         }
     }
@@ -118,7 +126,7 @@ class NewShowDetailViewModel: NSObject {
     }
 }
 
-extension NewShowDetailViewModel: UITableViewDataSource {
+extension ShowDetailViewModel: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         self.seassonsCount
