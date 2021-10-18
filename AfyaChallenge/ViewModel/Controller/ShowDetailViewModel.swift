@@ -143,7 +143,7 @@ extension ShowDetailViewModel: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "EpisodeCellIdentifier")
+        let cell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "EpisodeCellIdentifier")
    
         let episode = self.sectionsData[indexPath.section+1]![indexPath.row]
         cell.textLabel?.text = "\(episode.number). \(episode.name)"

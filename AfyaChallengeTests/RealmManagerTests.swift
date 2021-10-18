@@ -76,7 +76,7 @@ class RealmManagerTests: XCTestCase {
             requestExpectation.fulfill()
         }
         
-        print(finalShow.images["background"])
+       // print(finalShow.images["background"])
         waitForExpectations(timeout: 10, handler: nil)
     }
     

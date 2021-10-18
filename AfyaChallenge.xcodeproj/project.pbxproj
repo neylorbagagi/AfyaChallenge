@@ -423,9 +423,11 @@
 				TargetAttributes = {
 					F054C9C32649C86300760E66 = {
 						CreatedOnToolsVersion = 9.4;
+						LastSwiftMigration = 1210;
 					};
 					F054C9D72649C86600760E66 = {
 						CreatedOnToolsVersion = 9.4;
+						LastSwiftMigration = 1210;
 						TestTargetID = F054C9C32649C86300760E66;
 					};
 				};
@@ -691,7 +693,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = nu.cya.AfyaChallenge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -709,7 +711,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = nu.cya.AfyaChallenge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -729,7 +731,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = nu.cya.AfyaChallengeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AfyaChallenge.app/AfyaChallenge";
 			};
@@ -750,7 +752,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = nu.cya.AfyaChallengeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AfyaChallenge.app/AfyaChallenge";
 			};
