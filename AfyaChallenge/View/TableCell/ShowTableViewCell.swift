@@ -96,8 +96,6 @@ class ShowTableViewCell: UITableViewCell {
             self.collectionView.rightAnchor.constraint(equalTo: self.container.rightAnchor),
             self.collectionView.bottomAnchor.constraint(equalTo: self.container.bottomAnchor),
             
-//            self.sectionEmptyLabel.center
-            
             self.sectionEmptyLabel.topAnchor.constraint(equalTo: self.sectionTitle.bottomAnchor),
             self.sectionEmptyLabel.leftAnchor.constraint(equalTo: self.container.leftAnchor),
             self.sectionEmptyLabel.rightAnchor.constraint(equalTo: self.container.rightAnchor),

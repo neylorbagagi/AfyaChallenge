@@ -106,6 +106,9 @@ class RealmManager {
             fatalError("Could not to load Realm")
         }
         
+//        let shows = realm.objects(Show.self, at: IndexSet(list))
+        
+        
         var response:[Show] = []
         for id in list {
             if let show = realm.object(ofType: Show.self, forPrimaryKey: id){

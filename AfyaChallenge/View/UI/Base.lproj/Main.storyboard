@@ -10,46 +10,41 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Home Table View Controller-->
-        <scene sceneID="KV0-33-gqj">
-            <objects>
-                <tableViewController id="NYE-gR-HiN" customClass="HomeTableViewController" customModule="AfyaChallenge" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ppA-Bx-JpV">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <connections>
-                            <outlet property="dataSource" destination="NYE-gR-HiN" id="xg0-9N-QfB"/>
-                            <outlet property="delegate" destination="NYE-gR-HiN" id="75Z-St-c4F"/>
-                        </connections>
-                    </tableView>
-                    <tabBarItem key="tabBarItem" systemItem="featured" id="eW5-LP-4EW">
-                        <color key="badgeColor" name="gray_dark"/>
-                    </tabBarItem>
-                    <navigationItem key="navigationItem" id="EeM-Aj-8Y3"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="S7O-Nd-fhM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1362" y="-208"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="xXo-EW-X9x">
             <objects>
                 <tabBarController id="ktE-LG-x9w" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="eYE-wN-NGD">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" itemPositioning="centered" id="eYE-wN-NGD">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" name="white"/>
+                        <color key="selectedImageTintColor" name="gray_dark"/>
                     </tabBar>
                     <connections>
-                        <segue destination="NYE-gR-HiN" kind="relationship" relationship="viewControllers" id="AFh-bi-Kdo"/>
+                        <segue destination="zRi-cn-g3w" kind="relationship" relationship="viewControllers" id="GMi-bj-qSR"/>
                         <segue destination="5at-Wd-pXN" kind="relationship" relationship="viewControllers" id="Ql3-NE-wct"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="58m-J4-c6q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="346" y="123"/>
+        </scene>
+        <!--Home Table View Controller-->
+        <scene sceneID="GbN-r0-e3g">
+            <objects>
+                <viewController id="zRi-cn-g3w" customClass="HomeTableViewController" customModule="AfyaChallenge" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kvU-b6-ORz">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="FOo-mb-vDG"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" systemItem="featured" id="TRs-1x-kT9"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LBW-4c-oL8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1358" y="-218"/>
         </scene>
         <!--Shows-->
         <scene sceneID="bPV-N8-EUz">
@@ -74,6 +69,9 @@
         <image name="rectangle.split.3x3.fill" catalog="system" width="128" height="93"/>
         <namedColor name="gray_dark">
             <color red="0.13725490196078433" green="0.13725490196078433" blue="0.13725490196078433" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="white">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -44,6 +44,19 @@ class EpisodeDetailViewController: UIViewController {
         return imageView
     }()
     
+    var nameLabel:UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = ""
+        label.textAlignment = .left
+        label.lineBreakMode = .byTruncatingHead
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
+        label.font = UIFont(name: "SFProText-Bold", size: 36)
+        label.tintColor = #colorLiteral(red: 0.137254902, green: 0.137254902, blue: 0.137254902, alpha: 1)
+        return label
+    }()
+    
     var summaryView:SummaryView = {
         let summaryView = SummaryView()
         summaryView.layer.cornerRadius = 6
@@ -64,6 +77,7 @@ class EpisodeDetailViewController: UIViewController {
         self.scrollView.addSubview(self.contentView)
         
         self.contentView.addSubview(self.imageView)
+        self.contentView.addSubview(self.nameLabel)
         self.contentView.addSubview(self.summaryView)
         
         NSLayoutConstraint.activate([
@@ -87,10 +101,14 @@ class EpisodeDetailViewController: UIViewController {
             self.imageView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16),
             self.imageView.heightAnchor.constraint(equalTo: self.imageView.widthAnchor, multiplier: 9/16),
             
-            self.summaryView.topAnchor.constraint(equalTo: self.imageView.bottomAnchor, constant: 8),
+            self.nameLabel.topAnchor.constraint(equalTo: self.imageView.bottomAnchor, constant: 8),
+            self.nameLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16),
+            self.nameLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16),
+            
+            self.summaryView.topAnchor.constraint(equalTo: self.nameLabel.bottomAnchor, constant: 8),
             self.summaryView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16),
             self.summaryView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16),
-            self.summaryView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -16),
+            self.summaryView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -16)
             
         ])
     }
@@ -104,6 +122,8 @@ class EpisodeDetailViewController: UIViewController {
         }
         
         viewModel.requestImage()
+        
+        self.nameLabel.text = viewModel.name
         
         self.summaryView.genderLabel.text = viewModel.season
         self.summaryView.statusLabel.text = viewModel.duration

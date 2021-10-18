@@ -9,6 +9,9 @@
 import UIKit
 
 ///TODO: add to ViewModel
+///TODO: Algumas séries durante a exibição dos detalhes não carregam a imagem do poster e não exibem no_image
+///TODO:Lentidão para abrir a tela de detalhes, deve abrir e depois carregar episodios e imagens
+
 
 class ShowCollectionViewCell: UICollectionViewCell {
     
@@ -39,8 +42,9 @@ class ShowCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         self.backgroundColor = #colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.9411764706, alpha: 1)
         
-        self.addSubview(self.poster)
         self.addSubview(self.nameLabel)
+        self.addSubview(self.poster)
+        
 
         NSLayoutConstraint.activate([
             

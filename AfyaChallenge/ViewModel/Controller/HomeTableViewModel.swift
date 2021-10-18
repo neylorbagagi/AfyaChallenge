@@ -50,8 +50,12 @@ class HomeTableViewModel:NSObject {
 
 extension HomeTableViewModel:UITableViewDataSource{
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        data.count
+        self.data.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -64,5 +68,6 @@ extension HomeTableViewModel:UITableViewDataSource{
         cell.delegate = parentViewController(tableView) as! HomeTableViewController
         return cell
     }
+    
     
 }

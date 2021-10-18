@@ -26,16 +26,19 @@ class EpisodeDetailViewModel:NSObject {
     init(data:Episode) {
         super.init()
         self.data = data
-        self.name = data.name
+        self.name = "\(data.number). \(data.name)"
         self.season = "season \(data.season)"
         self.duration = "duration \(data.runtime)min"
         self.summary = data.summary.replacingOccurrences(of: "<[^>]+>", with: "",
                                                     options: .regularExpression, range: nil)
-
     }
     
     func requestImage(){
-        guard let url = URL(string: self.data?.images["medium"] ?? "") else { return }
+        guard let url = URL(string: self.data?.images["medium"] ?? "") else {
+            print("Image Load Error")
+            self.image = UIImage(named: "no_image")
+            return
+        }
         loadImage(from: url) { (image) in
             self.image = image
         }

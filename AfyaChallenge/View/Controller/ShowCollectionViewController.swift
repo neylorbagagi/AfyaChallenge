@@ -15,6 +15,7 @@ class ShowCollectionViewController: UIViewController {
 
     var viewModel:ShowCollectionViewModel?
     var isListeningScrollView:Bool = false
+    
     var collectionView:UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
@@ -30,6 +31,7 @@ class ShowCollectionViewController: UIViewController {
         let navigationBar = UINavigationBar(frame: .zero)
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         navigationBar.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        navigationBar.isTranslucent = false
         return navigationBar
     }()
     
