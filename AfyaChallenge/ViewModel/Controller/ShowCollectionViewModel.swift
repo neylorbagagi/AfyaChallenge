@@ -55,13 +55,22 @@ class ShowCollectionViewModel: NSObject {
             return
         }
         
-        let data = realm.objects(Show.self)
+        let data = realm.objects(Show.self).sorted(byKeyPath: "id", ascending: true)
         self.notificationToken = data.observe { change in
             switch change {
                 case .initial:
                     print(".initial")
                     
-                    if data.count == 0 {
+                    for show in data {
+                        print("show id: \(show.id)")
+                    }
+                    
+                    if UserDefaults.standard.object(forKey: "pageToRequest") != nil ||
+                       UserDefaults.standard.integer(forKey: "pageToRequest") == 0 {
+                        print("chama ai")
+//                    }
+//
+//                    if data.count == 0 {
                         self.requestData()
                     } else {
                         self.data = Array(data)

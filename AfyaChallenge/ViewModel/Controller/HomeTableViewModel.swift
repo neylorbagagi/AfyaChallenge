@@ -9,8 +9,6 @@
 import Foundation
 import UIKit
 
-// TODO: improve delegate collectionCell must notify viewController???
-
 enum HomeTableViewSection:CaseIterable {
     case highlights, favourites, updates, rating
     

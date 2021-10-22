@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import RealmSwift
-/// TODO: cache images to userDefaults
+
 /// TODO: Use loading in views
 
 class ShowTableViewModel: NSObject {

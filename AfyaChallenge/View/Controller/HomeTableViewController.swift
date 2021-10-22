@@ -16,7 +16,7 @@ class HomeTableViewController: UIViewController {
         let tableView = UITableView(frame: .zero)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(ShowTableViewCell.self, forCellReuseIdentifier: "showTableCell")
-        tableView.separatorColor = .clear;
+        tableView.separatorStyle = .none
         tableView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         tableView.footerView(forSection: 16)
         return tableView
@@ -49,6 +49,7 @@ class HomeTableViewController: UIViewController {
         self.viewModel = HomeTableViewModel()
         
         self.tableView.dataSource = self.viewModel
+        self.tableView.separatorStyle = .none
         
         let navigationItem = UINavigationItem()
         navigationItem.rightBarButtonItem = self.searchButton

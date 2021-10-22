@@ -8,13 +8,11 @@
 import Foundation
 import RealmSwift
 
-
-/// TODO: use async/await
-/// TODO: precisa corrigir com dispatchGroup.leave()
-
 class RealmManager {
     
     static let share = RealmManager()
+    let realm = try? Realm()
+ 
     
     func getShows(byPage page:Int, completion: @escaping (_ data:[Show],_ error:Error?) -> Void){
    
@@ -30,6 +28,7 @@ class RealmManager {
         APIClient.share.getShows(forPage: page) { (data, error) in
             guard error == nil else{
                 completion([],error)
+                dispatchGroup.leave()
                 return
             }
             responseData = data
@@ -78,24 +77,6 @@ class RealmManager {
             completion([],error)
         }
         
-        //        var responseData:[ShowRequestResponse] = []
-        //        dispatchGroup.enter()
-        //        APIClient.share.getShows(forPage: page) { (data, error) in
-        //            guard error == nil else{
-        //                completion([],error)
-        //                return
-        //            }
-        //            responseData = data
-        //            dispatchGroup.leave()
-        //        }
-        //        dispatchGroup.wait()
-        //        do {
-        //            let shows = try Show.showsFromAPIResponse(responseData)
-        //            saveShows(shows: shows)
-        //            completion(Array(shows),nil)
-        //        } catch let error {
-        //            completion([],error)
-        //        }
         
         
     }
@@ -106,53 +87,61 @@ class RealmManager {
             fatalError("Could not to load Realm")
         }
         
-//        let shows = realm.objects(Show.self, at: IndexSet(list))
+//        let collection = realm.objects(Show.self)
+//
+//        let indexSet = IndexSet(list)
+        
+//        let response:[Show] = Array(realm.objects(Show.self).objects(at: IndexSet(list)))
         
         
         var response:[Show] = []
+        
         for id in list {
             if let show = realm.object(ofType: Show.self, forPrimaryKey: id){
                 response.append(show)
             }
         }
+        
         if !response.isEmpty {
             completion(response,nil)
         }
         
-        
-        /// Networking operation
-        /// in case of Realm instance does not have the records for request page
-        /// this process will get it from API
-        
-        
-//        let group = DispatchGroup()
-//        var responseData:[ShowRequestResponse] = []
-//        
-//        
-//        for id in list {
-//            group.enter()
-//            APIClient.share.getShow(forId: id) { (data, error) in
-//                guard error == nil,
-//                  let data = data else{
-//                    completion([],error)
-//                    return
-//                }
-//                responseData.append(data)
-//                group.leave()
-//                
-//            }
-//        }
-//        group.wait()
-//        
-//        do {
-//            let shows = try Show.showsFromAPIResponse(responseData)
-//            saveShows(shows: shows)
-//            print(shows.count)
-//            completion(Array(shows),nil)
-//        } catch let error {
-//            completion([],error)
-//        }
-        
+        if response.count < list.count {
+            
+            /// Networking operation
+            /// in case of Realm instance does not have the records for request page
+            /// this process will get it from API
+            
+            /// parameter: remaining array contains show's id not found in realm
+            let remaining = list.filter { id in !response.contains(where: { $0.id == id } ) }
+            
+            let group = DispatchGroup()
+            var responseData:[ShowRequestResponse] = []
+    
+            for id in remaining {
+                group.enter()
+                APIClient.share.getShow(forId: id) { (data, error) in
+                    guard error == nil,
+                      let data = data else{
+                        completion([],error)
+                        group.leave()
+                        return
+                    }
+                    responseData.append(data)
+                    group.leave()
+                }
+            }
+            group.wait()
+    
+            do {
+                let shows = try Show.showsFromAPIResponse(responseData)
+                saveShows(shows: shows)
+                completion(Array(shows),nil)
+            } catch let error {
+                completion([],error)
+            }
+            
+        }
     }
     
     func getFavourites(completion: @escaping (_ data:[Show],_ error:Error?) -> Void){
@@ -203,6 +192,7 @@ class RealmManager {
             guard error == nil,
               let data = data else {
                 completion([],error)
+                dispatchGroup.leave()
                 return
             }
             updates = data

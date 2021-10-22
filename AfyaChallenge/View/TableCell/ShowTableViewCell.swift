@@ -8,7 +8,6 @@
 
 import UIKit
 
-///TODO: IMPLEMENT CONSTRAITS UPDATE FOR COLLECTIONVIEW
 ///TODO: THIS VIEW SHOULD NOT TO KNOW sectionType make it came from VIEWMODEL
 
 protocol ShowTableViewCellDelegate {
@@ -61,7 +60,7 @@ class ShowTableViewCell: UITableViewCell {
         label.text = "No Shows for this section yet :["
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.font = UIFont(name: "SFProText-Regular", size: 26)
+        label.font = UIFont(name: "SFProText-Thin", size: 22)
         label.textColor = #colorLiteral(red: 0.137254902, green: 0.137254902, blue: 0.137254902, alpha: 1)
         return label
     }()

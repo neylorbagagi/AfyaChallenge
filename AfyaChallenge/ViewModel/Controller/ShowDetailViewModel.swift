@@ -56,7 +56,7 @@ class ShowDetailViewModel: NSObject {
     init(data:Show) {
         self.data = data
         self.name = data.name
-        self.network = data.network
+        self.network = data.network == "Unknow" ? data.webChannel : data.network
         self.scheduleDays = Array(data.scheduleDays)
         self.rating = String(data.rating ?? 0.0)
         self.time = data.scheduleTime
@@ -74,34 +74,32 @@ class ShowDetailViewModel: NSObject {
             return
         }
 
-        if let imageUrl = data.images["background"]{
+        if let imageUrl = data.images["background"], data.images["background"] != "" {
             guard let url = URL(string: imageUrl) else {
                 print("Invalid image url")
                 return
             }
-            DispatchQueue.main.async {
                 loadImage(from: url) { (image) in
                     guard let validImage = image else { return }
                     Cache.share.storage.setObject(validImage, forKey: url.absoluteString as AnyObject)
                     self.image = validImage
                     return
                 }
-            }
+           
         } else {
-        
-            RealmManager.share.getImages(byShow: self.data) { (imageUrl, error) in
-                guard error == nil,
-                  let url = URL(string: imageUrl) else{
-                    print("Image Load Error: \(error?.localizedDescription)")
-                    self.image = UIImage(named: "no_image")
-                    return
+                RealmManager.share.getImages(byShow: self.data) { (imageUrl, error) in
+                    guard error == nil,
+                      let url = URL(string: imageUrl) else{
+                        print("Image Load Error: \(error?.localizedDescription)")
+                        self.image = UIImage(named: "no_image")
+                        return
+                    }
+                    loadImage(from: url) { (image) in
+                        guard let validImage = image else { return }
+                        Cache.share.storage.setObject(validImage, forKey: url.absoluteString as AnyObject)
+                        self.image = validImage
+                    }
                 }
-                loadImage(from: url) { (image) in
-                    guard let validImage = image else { return }
-                    Cache.share.storage.setObject(validImage, forKey: url.absoluteString as AnyObject)
-                    self.image = validImage
-                }
-            }
         }
     }
     
@@ -116,8 +114,12 @@ class ShowDetailViewModel: NSObject {
     }
     
     func heightForTableView(rowCellHeight:CGFloat, seassonViewHeight:CGFloat) -> CGFloat {
-        let rowTotal = CGFloat(CGFloat(episodesCount) * rowCellHeight)
-        let seassonTotal = CGFloat(CGFloat(seassonsCount) * seassonViewHeight)
+        let episodes = self.episodesCount
+        let seassons = self.seassonsCount
+        print("episodes: \(episodes), seassons: \(seassons)")
+        
+        let rowTotal = CGFloat(CGFloat(episodes) * rowCellHeight)
+        let seassonTotal = CGFloat(CGFloat(seassons) * seassonViewHeight)
         return rowTotal + seassonTotal + 32
     }
     

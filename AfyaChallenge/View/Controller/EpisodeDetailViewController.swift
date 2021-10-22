@@ -83,7 +83,7 @@ class EpisodeDetailViewController: UIViewController {
         NSLayoutConstraint.activate([
             
             self.closeButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 16),
-            self.closeButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16),
+            self.closeButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16),
                         
             self.scrollView.topAnchor.constraint(equalTo: self.closeButton.safeAreaLayoutGuide.bottomAnchor),
             self.scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),

@@ -7,12 +7,6 @@
 //
 
 
-///TODO: UPDATE DATA auto
-///TODO: verify if is saving episodes
-///TODO: the highlight request is over writing the favourite attribute
-///TODO: tableHeight wrong calculation
-///TODO: Update it's name
-
 import UIKit
 
 class ShowDetailViewController: UIViewController {
@@ -81,28 +75,32 @@ class ShowDetailViewController: UIViewController {
         table.sectionHeaderHeight = 30
         table.rowHeight = 51
         table.separatorStyle = .none
+        table.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         return table
     }()
 
+    var tableHeightConstraits = NSLayoutConstraint()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        self.view.addSubview(self.closeButton)
+        self.view.addSubview(self.scrollView)
         
         guard let viewModel = self.viewModel else { return }
         
         self.headerView.delegate = self
         
-        DispatchQueue.main.async {
-            self.configure(viewModel: viewModel)
-        }
-
+        
+        
+        self.tableHeightConstraits = self.table.heightAnchor.constraint(equalToConstant: 0)
+        self.table.addConstraint(self.tableHeightConstraits)
         self.table.register(UITableViewCell.self, forCellReuseIdentifier: self.reuseIdentifier)
         self.table.delegate = self
         self.table.dataSource = viewModel
         
         
-        self.view.addSubview(self.closeButton)
-        self.view.addSubview(self.scrollView)
+        
         
         self.scrollView.addSubview(self.contentView)
         
@@ -112,10 +110,14 @@ class ShowDetailViewController: UIViewController {
         self.contentView.addSubview(self.scheduleView)
         self.contentView.addSubview(self.table)
         
+        
+        
+        self.configure(viewModel: viewModel)
+        
         NSLayoutConstraint.activate([
             
             self.closeButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 16),
-            self.closeButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16),
+            self.closeButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16),
                         
             self.scrollView.topAnchor.constraint(equalTo: self.closeButton.safeAreaLayoutGuide.bottomAnchor),
             self.scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
@@ -150,14 +152,32 @@ class ShowDetailViewController: UIViewController {
             self.table.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 0),
             self.table.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: 0),
             self.table.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -16),
-            self.table.heightAnchor.constraint(equalToConstant: 0)
+            
         ])
         
         
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        guard let viewModel = self.viewModel else { return }
+        
+        viewModel.requestImage()
+        viewModel.requestEpisodes()
+        
+        
+        
+        
+//        if viewModel.episodes.count > 0 {
+//            DispatchQueue.main.async {
+//                self.updateTableHeight(viewModel: viewModel)
+//            }
+//        } else {
+//            viewModel.requestEpisodes()
+//        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        //asdasda
         self.viewModel = nil
     }
     
@@ -167,30 +187,8 @@ class ShowDetailViewController: UIViewController {
     
     func configure(viewModel:ShowDetailViewModel){
         
-        viewModel.bind = { image in
-            DispatchQueue.main.async {
-                self.imageView.image = image
-            }
-        }
-        viewModel.requestImage()
         
-        viewModel.bindEpisode = { rowsCount, seassonsCount in
-            DispatchQueue.main.async {
-                if rowsCount > 0 {
-                    self.updateTableHeight(viewModel: viewModel)
-                } else {
-                    self.table.isHidden = true
-                }
-            }
-        }
-        
-        if viewModel.episodes.count > 0 {
-            DispatchQueue.main.async {
-                self.updateTableHeight(viewModel: viewModel)
-            }
-        } else {
-            viewModel.requestEpisodes()
-        }
+    
         
         self.headerView.nameLabel.text = viewModel.name
         self.headerView.ratingLabel.text = viewModel.rating
@@ -201,8 +199,28 @@ class ShowDetailViewController: UIViewController {
         self.summaryView.textView.text = viewModel.summary
         
         self.scheduleView.networkLabel.text = viewModel.network
-        self.scheduleView.timeLabel.text = viewModel.time
+        
+        if viewModel.time != ""{
+            self.scheduleView.timeLabel.text = viewModel.time
+        } else {
+            self.scheduleView.timeLabel.isHidden = true
+        }
+        
         self.scheduleView.enableLabelDays(forDays: viewModel.scheduleDays)
+        
+        viewModel.bind = { image in
+            DispatchQueue.main.async {
+                self.imageView.image = image
+            }
+        }
+          
+        viewModel.bindEpisode = { rowsCount, seassonsCount in
+            DispatchQueue.main.async {
+                if rowsCount > 0 {
+                    self.updateTableHeight(viewModel: viewModel)
+                }
+            }
+        }
         
     }
     
@@ -211,15 +229,12 @@ class ShowDetailViewController: UIViewController {
     }
 
     
-    func updateFavorite(){
-        
-    }
-    
     func updateTableHeight(viewModel:ShowDetailViewModel){
         let tableHeight = viewModel.heightForTableView(rowCellHeight: self.table.rowHeight,
                                                        seassonViewHeight: self.table.sectionHeaderHeight)
-        let constrait = self.table.constraints.filter{$0.firstAttribute == .height}.first
-        constrait?.constant = tableHeight
+
+        self.tableHeightConstraits.constant = tableHeight
+        self.table.reloadData()
     }
 
 }
