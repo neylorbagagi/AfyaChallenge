@@ -59,18 +59,8 @@ class ShowCollectionViewModel: NSObject {
         self.notificationToken = data.observe { change in
             switch change {
                 case .initial:
-                    print(".initial")
-                    
-                    for show in data {
-                        print("show id: \(show.id)")
-                    }
-                    
                     if UserDefaults.standard.object(forKey: "pageToRequest") != nil ||
                        UserDefaults.standard.integer(forKey: "pageToRequest") == 0 {
-                        print("chama ai")
-//                    }
-//
-//                    if data.count == 0 {
                         self.requestData()
                     } else {
                         self.data = Array(data)
@@ -80,7 +70,6 @@ class ShowCollectionViewModel: NSObject {
                     print(".error: \(error)")
                     
                 case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
-                    print(".update")
                     self.data = Array(data)
             }
         }

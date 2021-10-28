@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import RealmSwift
 
-/// TODO: Use loading in views
 
 class ShowTableViewModel: NSObject {
 

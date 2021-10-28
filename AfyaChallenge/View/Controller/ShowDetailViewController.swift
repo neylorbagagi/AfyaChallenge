@@ -46,6 +46,17 @@ class ShowDetailViewController: UIViewController {
         return imageView
     }()
     
+    var imageActivityView:UIActivityIndicatorView = {
+        let activityView = UIActivityIndicatorView(style: .gray)
+        
+        activityView.layer.cornerRadius = 6
+        activityView.layer.masksToBounds = true
+        activityView.translatesAutoresizingMaskIntoConstraints = false
+        activityView.hidesWhenStopped = true
+        
+        return activityView
+    }()
+    
     var headerView:HeaderView = {
         let headerView = HeaderView()
         headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -79,6 +90,14 @@ class ShowDetailViewController: UIViewController {
         return table
     }()
 
+    var tableActivityView:UIActivityIndicatorView = {
+        let activityView = UIActivityIndicatorView(style: .gray)
+        activityView.translatesAutoresizingMaskIntoConstraints = false
+        activityView.hidesWhenStopped = true
+        
+        return activityView
+    }()
+    
     var tableHeightConstraits = NSLayoutConstraint()
     
     override func viewDidLoad() {
@@ -105,12 +124,15 @@ class ShowDetailViewController: UIViewController {
         self.scrollView.addSubview(self.contentView)
         
         self.contentView.addSubview(self.imageView)
+        self.contentView.addSubview(self.imageActivityView)
         self.contentView.addSubview(self.headerView)
         self.contentView.addSubview(self.summaryView)
         self.contentView.addSubview(self.scheduleView)
         self.contentView.addSubview(self.table)
+        self.contentView.addSubview(self.tableActivityView)
         
-        
+        self.imageActivityView.startAnimating()
+        self.tableActivityView.startAnimating()
         
         self.configure(viewModel: viewModel)
         
@@ -135,6 +157,11 @@ class ShowDetailViewController: UIViewController {
             self.imageView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16),
             self.imageView.heightAnchor.constraint(equalTo: self.imageView.widthAnchor, multiplier: 9/16),
             
+            self.imageActivityView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 8),
+            self.imageActivityView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16),
+            self.imageActivityView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16),
+            self.imageActivityView.heightAnchor.constraint(equalTo: self.imageView.widthAnchor, multiplier: 9/16),
+            
             self.headerView.topAnchor.constraint(equalTo: self.imageView.bottomAnchor, constant: 8),
             self.headerView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16),
             self.headerView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16),
@@ -153,6 +180,10 @@ class ShowDetailViewController: UIViewController {
             self.table.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: 0),
             self.table.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -16),
             
+            self.tableActivityView.topAnchor.constraint(equalTo: self.scheduleView.bottomAnchor, constant: 8),
+            self.tableActivityView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 0),
+            self.tableActivityView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: 0),
+            self.tableActivityView.heightAnchor.constraint(equalToConstant: 61)
         ])
         
         
@@ -164,17 +195,6 @@ class ShowDetailViewController: UIViewController {
         
         viewModel.requestImage()
         viewModel.requestEpisodes()
-        
-        
-        
-        
-//        if viewModel.episodes.count > 0 {
-//            DispatchQueue.main.async {
-//                self.updateTableHeight(viewModel: viewModel)
-//            }
-//        } else {
-//            viewModel.requestEpisodes()
-//        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -186,9 +206,6 @@ class ShowDetailViewController: UIViewController {
     }
     
     func configure(viewModel:ShowDetailViewModel){
-        
-        
-    
         
         self.headerView.nameLabel.text = viewModel.name
         self.headerView.ratingLabel.text = viewModel.rating
@@ -210,15 +227,18 @@ class ShowDetailViewController: UIViewController {
         
         viewModel.bind = { image in
             DispatchQueue.main.async {
+                self.imageActivityView.stopAnimating()
                 self.imageView.image = image
             }
         }
           
         viewModel.bindEpisode = { rowsCount, seassonsCount in
+            
             DispatchQueue.main.async {
                 if rowsCount > 0 {
                     self.updateTableHeight(viewModel: viewModel)
                 }
+                self.tableActivityView.stopAnimating()
             }
         }
         

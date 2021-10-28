@@ -8,9 +8,6 @@
 
 import UIKit
 
-///TODO:Lentidão para abrir a tela de detalhes, deve abrir e depois carregar episodios e imagens
-
-
 class ShowCollectionViewCell: UICollectionViewCell {
     
     var viewModel:ShowCellViewModel?
