@@ -162,9 +162,6 @@ class RealmManager {
         }
         
         let response = realm.objects(Show.self).sorted(byKeyPath: "rating", ascending: false)
-        for show in response {
-            print(show.rating)
-        }
         completion(Array(response),nil)
 
     }
@@ -295,7 +292,6 @@ class RealmManager {
         
         try! realm.write{
             show.favourite.toggle()
-            print(show.favourite)
         }
     }
     

@@ -195,7 +195,6 @@ extension ShowTableViewCell: UICollectionViewDelegateFlowLayout{
 extension ShowTableViewCell: UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
-        print(indexPath.row)
         
         guard let delegate = self.delegate,
               let viewModel = self.viewModel else {

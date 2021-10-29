@@ -90,8 +90,6 @@ class HeaderView:UIView {
     }
     
     @objc func buttonClick(){
-        //self.dismiss(animated: true, completion: nil)
-        print("ADASDASD")
         self.favouriteButton.isSelected.toggle()
         guard let delegate = self.delegate else { return }
         delegate.headerView(self, favouriteButtonDidChanceTo: self.favouriteButton.isSelected)

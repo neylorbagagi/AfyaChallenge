@@ -61,8 +61,6 @@ class SearchViewModel:NSObject {
         self.filterString = string
         
         self.data = Array(realm.objects(Show.self).filter("name contains[c] %@",self.filterString))
-        print("Local search itens \(self.data.count)")
-        
         
         DispatchQueue(label: "backgroundRequest", qos: .background).async {
             RealmManager.share.getShows(byString: string) { (data, error) in

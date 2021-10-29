@@ -41,10 +41,8 @@ class ShowTableViewModel: NSObject {
                 switch changes {
                     case .initial:
                         // Results are now populated and can be accessed without blocking the UI
-                        print("initial")
                         break
                     case .update(_, let deletions, let insertions, let modifications):
-                        print("updated")
                         RealmManager.share.getFavourites() {(data, error) in
                             guard error == nil else { return }
                             self.data = data

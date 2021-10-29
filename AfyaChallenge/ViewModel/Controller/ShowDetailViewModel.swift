@@ -116,7 +116,6 @@ class ShowDetailViewModel: NSObject {
     func heightForTableView(rowCellHeight:CGFloat, seassonViewHeight:CGFloat) -> CGFloat {
         let episodes = self.episodesCount
         let seassons = self.seassonsCount
-        print("episodes: \(episodes), seassons: \(seassons)")
         
         let rowTotal = CGFloat(CGFloat(episodes) * rowCellHeight)
         let seassonTotal = CGFloat(CGFloat(seassons) * seassonViewHeight)

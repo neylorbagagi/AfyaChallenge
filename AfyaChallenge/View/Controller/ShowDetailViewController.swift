@@ -201,9 +201,6 @@ class ShowDetailViewController: UIViewController {
         self.viewModel = nil
     }
     
-    deinit {
-        print("deiniting")
-    }
     
     func configure(viewModel:ShowDetailViewModel){
         
